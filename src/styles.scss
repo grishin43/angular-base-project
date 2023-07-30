@@ -41,3 +41,25 @@ app-root {
 .text-primary {
   color: var(--bs-primary-rgb) !important;
 }
+
+.status-pill {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 30px;
+
+  &.status-warn {
+    background-color: #F9BB31;
+  }
+
+  &.status-info {
+    background-color: #3A63ED;
+  }
+
+  &.status-success {
+    background-color: #008140;
+  }
+
+  &.status-danger {
+    background-color: #F02C2D;
+  }
+}

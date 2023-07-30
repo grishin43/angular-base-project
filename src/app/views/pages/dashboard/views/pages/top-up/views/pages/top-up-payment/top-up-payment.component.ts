@@ -10,6 +10,7 @@ import {AppRoute} from "../../../../../../../../../common/enums/app-route.enum";
 import {DashboardRoute} from "../../../../../../common/enums/dashboard-route.enum";
 import {TopUpRoute} from "../../../common/enums/top-up-route.enum";
 import {ToastService} from "../../../../../../../../../services/toast/toast.service";
+import {EBalanceTransactionStatus} from "../../../../../../../../../common/models/domain/models";
 
 @Component({
   selector: 'app-top-up-payment',
@@ -20,8 +21,10 @@ import {ToastService} from "../../../../../../../../../services/toast/toast.serv
 export class TopUpPaymentComponent extends ADestroyerDirective implements OnInit {
   public order!: any;
   public isLoading = true;
+  public isAccepted!: boolean;
   public dateFullFormat: string = DateHelper.fullFormat;
   public clock: string = '--:--:--';
+  public transactionStatus = EBalanceTransactionStatus;
 
   public readonly supportLink: string = environment.supportLink;
   public readonly transactionTimeInHours: number = environment.transactionTimeInHours || 2;
@@ -37,6 +40,9 @@ export class TopUpPaymentComponent extends ADestroyerDirective implements OnInit
 
   ngOnInit(): void {
     this.subOrder();
+    setTimeout(() => {
+      this.handleOrderAccepting();
+    }, 3000);
   }
 
   public cancelOrder(): void {
@@ -51,6 +57,10 @@ export class TopUpPaymentComponent extends ADestroyerDirective implements OnInit
           });
         });
     }, 500);
+  }
+
+  public backToProfile(): void {
+    this.router.navigate([`/${AppRoute.DASHBOARD}`]);
   }
 
   private subOrder(): void {
@@ -108,6 +118,13 @@ export class TopUpPaymentComponent extends ADestroyerDirective implements OnInit
           duration: 5000
         });
       })
+  }
+
+  private handleOrderAccepting(): void {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isAccepted = true;
+    }, 750);
   }
 
 }

@@ -20,7 +20,10 @@
     "cancelOrder": "Cancel order",
     "gotProblems?": "Got problems? Contact our support here",
     "copiedToClipBoard": "Successfully copied to clipboard!",
-    "orderCanceled": "Order successfully canceled"
+    "orderCanceled": "Order successfully canceled",
+    "success": "Success",
+    "paymentReceived": "Payment was received.",
+    "backToProfile": "Back to profile"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",
