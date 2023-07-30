@@ -4,18 +4,15 @@
     [formGroup]="formGroup"
     (submit)="$event.preventDefault(); onSubmit()">
     <h3 class="text-center mb-2">
-      {{'common.makeOrder' | translate}}
+      {{'common.withdraw' | translate}}
     </h3>
-    <p class="text-center">
-      {{'common.minUsdDeposit' | translate : {amount: minUsdDeposit} }}
-    </p>
     <div class="form-group">
       <label for="paymentMethod">
-        {{'common.paymentMethod' | translate}}
+        {{'common.currency' | translate}}
       </label>
       <select
         id="paymentMethod"
-        [formControlName]="'paymentMethod'">
+        [formControlName]="'currency'">
         <option
           [value]="pm.value"
           *ngFor="let pm of paymentMethods">
@@ -25,7 +22,7 @@
     </div>
     <div class="form-group">
       <label for="amount">
-        {{'common.amount' | translate}}
+        {{'common.amountToWithdraw' | translate}}
       </label>
       <input
         type="text"
@@ -34,13 +31,25 @@
         placeholder="100"
         required
         [formControlName]="'amount'">
-      <small>{{'common.topUpFee' | translate : {percent: topUpFee} }}</small>
+      <small>{{'common.availableBalance' | translate}}: {{tokenAvailableBalance}}</small>
+    </div>
+    <div class="form-group">
+      <label for="address">
+        {{'common.addressToWithdraw' | translate}}
+      </label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        placeholder="*****eqM7cr7e******TUSTXZz*****DP"
+        required
+        [formControlName]="'address'">
     </div>
     <button
       class="mb-0"
       type="submit"
       [attr.aria-busy]="isLoading">
-      {{'common.generateOrder' | translate}}
+      {{'common.withdraw' | translate}}
     </button>
   </form>
 </div>

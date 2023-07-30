@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-top-up',
+  selector: 'app-wallets',
   template: '<router-outlet></router-outlet>'
 })
-export class TopUpComponent {}
+export class WalletsComponent {
+
+}

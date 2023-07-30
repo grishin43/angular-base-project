@@ -63,3 +63,14 @@ app-root {
     background-color: #F02C2D;
   }
 }
+
+td, th {
+  border-color: rgba(#ffffff, 0.15);
+}
+
+app-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 11;
+}

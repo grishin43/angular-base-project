@@ -10,12 +10,16 @@ const routes: Route[] = [
     children: [
       {
         path: '',
-        redirectTo: DashboardRoute.TOP_UP,
+        redirectTo: DashboardRoute.WALLETS,
         pathMatch: 'full'
       },
       {
         path: DashboardRoute.TOP_UP,
         loadChildren: () => import('./views/pages/top-up/top-up.module').then((m) => m.TopUpModule)
+      },
+      {
+        path: DashboardRoute.WALLETS,
+        loadChildren: () => import('./views/pages/wallets/wallets.module').then((m) => m.WalletsModule)
       }
     ]
   }

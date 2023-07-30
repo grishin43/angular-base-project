@@ -1,0 +1,66 @@
+button {
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+h5 {
+  font-weight: 500;
+}
+
+.eye-button {
+  width: 24px;
+  height: 24px;
+  background: rgba(#FFFFFF, 0.15);
+  padding: 0;
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.btc-balance {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  border-bottom: 1px dashed rgb(132, 142, 156);
+  display: inline-block;
+}
+
+.usd-balance {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  opacity: 0.5;
+}
+
+.balance-hidden {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.assets-hidden {
+  min-width: 0px;
+  display: flex;
+  border-radius: 4px;
+  -webkit-box-align: center;
+  align-items: center;
+  background-color: rgb(60, 38, 1);
+  padding: 12px;
+  width: 100%;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  span {
+    font-size: 12px;
+    margin-left: 12px;
+  }
+}

@@ -23,7 +23,15 @@
     "orderCanceled": "Order successfully canceled",
     "success": "Success",
     "paymentReceived": "Payment was received.",
-    "backToProfile": "Back to profile"
+    "backToProfile": "Back to profile",
+    "withdraw": "Withdraw",
+    "deposit": "Deposit",
+    "currency": "Currency",
+    "amountToWithdraw": "Amount to withdraw",
+    "addressToWithdraw": "Address to withdraw",
+    "availableBalance": "Available balance",
+    "totalBalance": "Estimated balance",
+    "hiddenBalance": "Your assets are hidden, tap the eye icon to show your assets."
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",
