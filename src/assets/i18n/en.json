@@ -43,7 +43,15 @@
     "confirmPassword": "Confirm password",
     "fullName": "Full name",
     "alreadyHaveAccount": "Already have an account?",
-    "signInHere": "Sign in here"
+    "signInHere": "Sign in here",
+    "exchange": "Exchange",
+    "exchangeDesc": "Average token exchange time can take up to 15 minutes.",
+    "from": "From",
+    "to": "To",
+    "iGive": "I give",
+    "iReceive": "I receive",
+    "exchangeTokens": "Exchange tokens",
+    "tokenChangeSuccessfully": "Tokens have been successfully exchanged.\nWait for the balance updates, usually it takes up to 15 minutes."
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",

@@ -8,7 +8,7 @@
   flex: 1;
   position: relative;
 
-  .content-box-overlay {
+  .content-overlay {
     position: absolute;
     left: 0;
     top: 0;
@@ -20,10 +20,19 @@
     justify-content: center;
     background-color: transparent;
     backdrop-filter: blur(5px);
+    padding: 16px;
+
+    p {
+      max-width: 450px;
+    }
   }
 
   &.content-box-sm {
     max-width: 390px;
+  }
+
+  &.content-box-md {
+    max-width: 560px;
   }
 
   &.content-box-lg {

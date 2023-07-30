@@ -1,5 +1,5 @@
 export enum WalletsRoute {
   LIST = 'list',
-  EXCHANGE = 'exchange',
-  WITHDRAW = 'withdraw'
+  WITHDRAW = 'withdraw',
+  EXCHANGE = 'exchange-tokens'
 }
