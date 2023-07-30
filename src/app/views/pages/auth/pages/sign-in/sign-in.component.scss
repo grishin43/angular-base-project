@@ -1,0 +1,23 @@
+.check-url {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: #008140;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+  }
+
+  span {
+    font-size: 13px;
+    border-bottom: 1px dashed rgb(132, 142, 156);
+  }
+}

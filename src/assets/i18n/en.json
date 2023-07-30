@@ -31,10 +31,23 @@
     "addressToWithdraw": "Address to withdraw",
     "availableBalance": "Available balance",
     "totalBalance": "Estimated balance",
-    "hiddenBalance": "Your assets are hidden, tap the eye icon to show your assets."
+    "hiddenBalance": "Your assets are hidden, tap the eye icon to show your assets.",
+    "signIn": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "checkWebsiteUrl": "Please check that you are visiting the correct URL",
+    "rememberMe": "Remember me",
+    "dontHaveAccount": "Don't have an account?",
+    "signUpHere": "Sign up here",
+    "signUp": "Sign up",
+    "confirmPassword": "Confirm password",
+    "fullName": "Full name",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInHere": "Sign in here"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",
-    "transactionTimeoutExpired": "Transaction timeout expired"
+    "transactionTimeoutExpired": "Transaction timeout expired",
+    "fillAllRequiredFields": "Please, fill all required fields"
   }
 }

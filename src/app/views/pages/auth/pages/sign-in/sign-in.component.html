@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center mt-5 mb-5">
+  <form
+    class="content-box-sm"
+    [formGroup]="formGroup"
+    (submit)="$event.preventDefault(); onSubmit()">
+    <h3 class="text-center mb-2">
+      {{'common.signIn' | translate}}
+    </h3>
+    <small class="text-center d-block m-auto" style="max-width: 200px">{{'common.checkWebsiteUrl' | translate}}:</small>
+    <span class="check-url text-center mt-2 mb-3">
+      <mat-icon>lock</mat-icon>
+      <span>{{currentOrigin}}</span>
+    </span>
+    <div class="form-group">
+      <label for="email">
+        {{'common.email' | translate}}
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="***.***@***.com"
+        required
+        [formControlName]="'email'">
+    </div>
+    <div class="form-group">
+      <label for="password">
+        {{'common.password' | translate}}
+      </label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="********"
+        required
+        [formControlName]="'password'">
+    </div>
+    <div class="form-group mb-3">
+      <label for="terms">
+        <input type="checkbox" id="terms" name="terms">
+        {{'common.rememberMe' | translate}}
+      </label>
+    </div>
+    <button
+      class="mb-3"
+      type="submit"
+      [attr.aria-busy]="isLoading">
+      {{'common.signIn' | translate}}
+    </button>
+    <small class="mb-0 text-center d-block">{{'common.dontHaveAccount' | translate}} <a [routerLink]="'../sign-up'">{{'common.signUpHere' | translate}}</a></small>
+  </form>
+</div>
