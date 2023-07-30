@@ -1,0 +1,149 @@
+<div class="d-flex justify-content-center">
+  <div
+    class="content-box-lg mt-5 mb-5"
+    [ngClass]="{
+      'loading': isLoading
+    }">
+    <div
+      @fadeInOut
+      *ngIf="isLoading"
+      class="content-box-overlay">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <h3 class="text-center mb-2">
+      {{'common.paymentOrder' | translate}}
+    </h3>
+    <small class="text-center d-block text-secondary m-auto">
+      {{'common.paymentOrderDesc' | translate }}
+    </small>
+    <div class="row mt-2">
+      <div class="col-md-6 col-12">
+        <div class="mb-3">
+          <div class="row align-items-end gx-1">
+            <div class="col">
+              <div class="form-group">
+                <label for="address">
+                  {{'common.address' | translate}}
+                </label>
+                <input
+                  style="text-overflow: ellipsis"
+                  class="mb-0"
+                  type="text"
+                  id="address"
+                  disabled
+                  [value]="order ? order.address : '...'">
+              </div>
+            </div>
+            <div class="col-auto">
+              <button
+                class="mb-0 outline lg-icon-button"
+                copyToClipboard
+                [matTooltip]="'common.copyToClipboard' | translate"
+                [disabled]="isLoading"
+                [clipboardText]="order ? order.address : '...'">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <img
+          class="d-block m-auto"
+          width="185"
+          height="185"
+          [attr.src]="order && order.qrCode">
+        <div class="text-center mt-3">
+          <p class="mb-1">{{'common.validThrough' | translate}}</p>
+          <h4 class="m-0 text-primary">{{clock}}</h4>
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="order-details">
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.orderId' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <div class="row gx-1 flex-nowrap">
+                <div class="col" style="max-width: calc(100% - 24px)">
+                  <span class="text-end text-truncate d-block">{{order ? order.id : '-'}}</span>
+                </div>
+                <div class="col-auto">
+                  <button
+                    *ngIf="!isLoading"
+                    class="mb-0 sm-icon-button"
+                    copyToClipboard
+                    [matTooltip]="'common.copyToClipboard' | translate"
+                    [clipboardText]="order ? order.id : '...'">
+                    <mat-icon>file_copy</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.date' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span
+                class="text-end text-truncate d-block">{{order ? (order.createdAt | date : dateFullFormat) : '-'}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.paymentMethod' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span class="text-end text-truncate d-block">{{order ? order.paymentMethod : '-'}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.amount' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span class="text-end text-truncate d-block">{{order ? order.amount : '-'}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.replenishment' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span class="text-end text-truncate d-block">{{order ? order.topUpFee : '-'}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.totalAmount' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span class="text-end text-truncate d-block">{{order ? order.totalAmount : '-'}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="text-secondary">{{'common.status' | translate}}:</span>
+            </div>
+            <div class="col-6">
+              <span class="text-end text-truncate d-block">{{order ? order.status : '-'}}</span>
+            </div>
+          </div>
+        </div>
+        <button
+          class="secondary d-block mb-2"
+          [disabled]="isLoading"
+          (click)="$event.preventDefault(); cancelOrder()">
+          {{'common.cancelOrder' | translate}}
+        </button>
+        <div class="text-center">
+          <a
+            target="_blank"
+            [attr.href]="supportLink">
+            {{'common.gotProblems?' | translate}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

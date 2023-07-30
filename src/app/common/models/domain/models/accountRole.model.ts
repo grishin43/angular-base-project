@@ -1,5 +1,4 @@
 import { IAccountModel } from './account.model';
-import { ICompanyModel } from "./company.model";
 
 export enum ETrackerModule {
   Company = 'company',
@@ -101,5 +100,4 @@ export interface IAccountRole {
 
 export interface IAccountRoleModel extends IAccountRole {
   account?: IAccountModel;
-  company?: ICompanyModel;
 }

@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <form
+    class="content-box-sm mt-5 mb-5"
+    [formGroup]="formGroup"
+    (submit)="$event.preventDefault(); onSubmit()">
+    <h3 class="text-center mb-2">
+      {{'common.makeOrder' | translate}}
+    </h3>
+    <p class="text-center">
+      {{'common.minUsdDeposit' | translate : {amount: minUsdDeposit} }}
+    </p>
+    <div class="form-group">
+      <label for="paymentMethod">
+        {{'common.paymentMethod' | translate}}
+      </label>
+      <select
+        id="paymentMethod"
+        [formControlName]="'paymentMethod'">
+        <option
+          [value]="pm.value"
+          *ngFor="let pm of paymentMethods">
+          {{pm.key}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="amount">
+        {{'common.amount' | translate}}
+      </label>
+      <input
+        type="text"
+        id="amount"
+        name="amount"
+        placeholder="100"
+        required
+        [formControlName]="'amount'">
+      <small>{{'common.topUpFee' | translate : {percent: topUpFee} }}</small>
+    </div>
+    <button
+      class="mb-0"
+      type="submit"
+      [attr.aria-busy]="isLoading">
+      {{'common.generateOrder' | translate}}
+    </button>
+  </form>
+</div>

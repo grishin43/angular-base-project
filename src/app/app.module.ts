@@ -11,10 +11,16 @@ import {MissingTranslationHandler, TranslateLoader, TranslateModule} from "@ngx-
 import {HttpLoaderFactory} from "./common/helpers/i18n/i18n-http-loader";
 import {MissingTranslationService} from "./common/helpers/i18n/i18n-missing-translation";
 import {LocalStorageService} from "./services/local-storage/local-storage.service";
+import { HeaderComponent } from './views/partial/header/header.component';
+import { FooterComponent } from './views/partial/footer/footer.component';
+import {I18nService} from "./services/i18n/i18n.service";
+import {ToastModule} from "./services/toast/toast.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -25,12 +31,14 @@ import {LocalStorageService} from "./services/local-storage/local-storage.servic
       loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]},
       missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingTranslationService},
     }),
+    ToastModule
   ],
   providers: [
     ApiService,
     AuthService,
     AuthGuard,
     LocalStorageService,
+    I18nService,
     {
       provide: Window,
       useValue: window

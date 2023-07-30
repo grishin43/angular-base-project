@@ -1,5 +1,5 @@
 {
-  "name": "angular-base-project",
+  "name": "p2p-ui",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -22,8 +22,11 @@
     "@angular/router": "^15.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
-    "js-base64": "^3.7.2",
+    "@picocss/pico": "^1.5.10",
+    "ngx-clipboard": "^15.1.0",
     "bootstrap": "^5.3.1",
+    "js-base64": "^3.7.2",
+    "moment": "^2.29.4",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

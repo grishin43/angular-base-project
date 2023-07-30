@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-base-project": {
+    "p2p-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -29,7 +29,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-base-project",
+            "outputPath": "dist/p2p-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -39,13 +39,18 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
+              "src/android-chrome-192x192.png",
+              "src/android-chrome-512x512.png",
+              "src/apple-touch-icon.png",
+              "src/favicon-16x16.png",
+              "src/favicon-32x32.png",
+              "src/site.webmanifest",
               "src/assets"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap-reboot.css",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/bootstrap/dist/css/bootstrap-grid.css",
-              "node_modules/bootstrap/dist/css/bootstrap-utilities.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -81,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-base-project:build:production"
+              "browserTarget": "p2p-ui:build:production"
             },
             "development": {
-              "browserTarget": "angular-base-project:build:development"
+              "browserTarget": "p2p-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-base-project:build"
+            "browserTarget": "p2p-ui:build"
           }
         },
         "test": {
@@ -106,6 +111,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
+              "src/android-chrome-192x192.png",
+              "src/android-chrome-512x512.png",
+              "src/apple-touch-icon.png",
+              "src/favicon-16x16.png",
+              "src/favicon-32x32.png",
+              "src/site.webmanifest",
               "src/assets"
             ],
             "styles": [

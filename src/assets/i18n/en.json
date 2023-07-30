@@ -1,4 +1,29 @@
 {
   "LANG": "en",
-  "common": {}
+  "common": {
+    "makeOrder": "Make order",
+    "minUsdDeposit": "Minimum deposit amount - ${{amount}}",
+    "generateOrder": "Generate order",
+    "paymentMethod": "Payment method",
+    "amount": "Amount",
+    "topUpFee": "Top up fee is {{percent}}%",
+    "paymentOrder": "Payment order",
+    "paymentOrderDesc": "Please make sure that you send currency to the specified wallet in the selected currency. Otherwise we can't help you.",
+    "address": "Address",
+    "copyToClipboard": "Copy to clipboard",
+    "validThrough": "Valid through",
+    "orderId": "Order ID",
+    "date": "Date",
+    "replenishment": "Top up fee",
+    "totalAmount": "Total amount",
+    "status": "Status",
+    "cancelOrder": "Cancel order",
+    "gotProblems?": "Got problems? Contact our support here",
+    "copiedToClipBoard": "Successfully copied to clipboard!",
+    "orderCanceled": "Order successfully canceled"
+  },
+  "errors": {
+    "errorOccurred": "Unexpected error occurred, please contact our support",
+    "transactionTimeoutExpired": "Transaction timeout expired"
+  }
 }

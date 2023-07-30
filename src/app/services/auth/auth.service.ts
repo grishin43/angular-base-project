@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {of} from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -7,7 +8,7 @@ export class AuthService {
   }
 
   public getAccount(): any {
-    return {};
+    return of(true);
   }
 
 }
