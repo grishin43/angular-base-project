@@ -9,13 +9,15 @@ import {TranslateModule} from "@ngx-translate/core";
 import {ReactiveFormsModule} from "@angular/forms";
 import {WalletsExchangeComponent} from './pages/wallets-exchange/wallets-exchange.component';
 import {MatIconModule} from "@angular/material/icon";
+import { WalletsHistoryComponent } from './pages/wallets-history/wallets-history.component';
 
 @NgModule({
   declarations: [
     WalletsComponent,
     WalletsListComponent,
     WalletsWithdrawComponent,
-    WalletsExchangeComponent
+    WalletsExchangeComponent,
+    WalletsHistoryComponent
   ],
   imports: [
     CommonModule,

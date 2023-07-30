@@ -5,6 +5,7 @@ import {WalletsListComponent} from "./pages/wallets-list/wallets-list.component"
 import {WalletsRoute} from "./common/enums/top-up-route.enum";
 import {WalletsWithdrawComponent} from "./pages/wallets-withdraw/wallets-withdraw.component";
 import {WalletsExchangeComponent} from "./pages/wallets-exchange/wallets-exchange.component";
+import {WalletsHistoryComponent} from "./pages/wallets-history/wallets-history.component";
 
 const routes: Route[] = [
   {
@@ -27,6 +28,10 @@ const routes: Route[] = [
       {
         path: WalletsRoute.EXCHANGE,
         component: WalletsExchangeComponent
+      },
+      {
+        path: WalletsRoute.HISTORY,
+        component: WalletsHistoryComponent
       }
     ]
   }
