@@ -30,4 +30,10 @@ export class AuthService {
     this.router.navigate([`/${AppRoute.DASHBOARD}`]);
   }
 
+  public signOut(): void {
+    this.localstorageService.clear();
+    this.account = undefined as unknown as IAccountModel;
+    this.router.navigate([`/${AppRoute.INTRO}`]);
+  }
+
 }

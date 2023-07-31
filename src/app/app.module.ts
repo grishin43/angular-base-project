@@ -15,12 +15,18 @@ import { HeaderComponent } from './views/partial/header/header.component';
 import { FooterComponent } from './views/partial/footer/footer.component';
 import {I18nService} from "./services/i18n/i18n.service";
 import {ToastModule} from "./services/toast/toast.module";
+import { IntroComponent } from './views/pages/intro/intro.component';
+import { AboutComponent } from './views/pages/about/about.component';
+import { TermsComponent } from './views/pages/terms/terms.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    IntroComponent,
+    AboutComponent,
+    TermsComponent
   ],
   imports: [
     BrowserModule,

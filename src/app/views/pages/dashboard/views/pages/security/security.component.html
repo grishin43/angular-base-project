@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center mt-5 mb-5">
+  <div class="content-box-xl">
+    <h3 class="text-center mb-4">
+      {{'common.security' | translate}}
+    </h3>
+    <div class="row gx-3 mt-3 align-items-center">
+      <div class="col-auto d-flex">
+        <mat-icon>key</mat-icon>
+      </div>
+      <div class="col">
+        <h4 class="mb-1">Change password</h4>
+        <p class="mb-0">Update your password</p>
+      </div>
+      <div class="col-auto">
+        <button
+          class="outline d-block text-truncate mb-0"
+          (click)="$event.preventDefault(); changePassword()">
+          {{'common.edit' | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="row gx-3 mt-3 align-items-center">
+      <div class="col-auto d-flex">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="col">
+        <h4 class="mb-1">Two-factor authentication</h4>
+        <p class="mb-0">Connect two-factor authentication to secure your funds in any case</p>
+      </div>
+      <div class="col-auto">
+        <button
+          class="secondary d-block text-truncate mb-0"
+          (click)="$event.preventDefault();" disabled>
+          {{'common.disabled' | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="row gx-3 mt-3 align-items-center">
+      <div class="col-auto d-flex">
+        <mat-icon>phone</mat-icon>
+      </div>
+      <div class="col">
+        <h4 class="mb-1">Phone Notify</h4>
+        <p class="mb-0">Get transition notification in your phone</p>
+      </div>
+      <div class="col-auto">
+        <label for="checkbox-1">
+          <input type="checkbox" id="checkbox-1" name="checkbox-1" checked="">
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

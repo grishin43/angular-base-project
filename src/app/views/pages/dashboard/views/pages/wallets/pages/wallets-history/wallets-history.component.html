@@ -2,15 +2,18 @@
   <div class="row">
     <div class="col-12">
       <div class="content-box">
-        <h3>History</h3>
+        <h3 class="text-center">{{'common.transactionHistory' | translate}}</h3>
         <div class="table-wrapper">
           <table class="mb-0">
             <thead>
             <tr>
-              <th scope="col">Currency</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">USD</th>
-              <th scope="col" width="1px"></th>
+              <th scope="col" style="width: 30px">#</th>
+              <th scope="col" style="width: 100px">{{'common.currency' | translate}}</th>
+              <th scope="col" style="width: 120px">{{'common.network' | translate}}</th>
+              <th scope="col" style="width: 120px">{{'common.amount' | translate}}</th>
+              <th scope="col" style="width: 120px">{{'common.type' | translate}}</th>
+              <th scope="col" >{{'common.status' | translate}}</th>
+              <th scope="col" style="width: 180px">{{'common.date' | translate}}</th>
             </tr>
             </thead>
             <tbody>
@@ -20,27 +23,35 @@
               </td>
             </tr>
             <ng-template #dataTemp>
-              <tr *ngFor="let item of filteredItems">
+              <tr *ngFor="let item of rows; let i = index">
+                <td>{{i + 1}}</td>
                 <td>{{item.currency}}</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.usdPrice}}$</td>
+                <td>{{item.network}}</td>
+                <td>{{item.amount.toFixed(5)}}</td>
                 <td>
-                  <div class="row align-items-end flex-nowrap gx-2">
-                    <div class="col-auto">
-                      <button
-                        class="contrast outline d-block text-truncate mb-0"
-                        (click)="$event.preventDefault(); withdraw(item.currency)">
-                        {{'common.withdraw' | translate}}
-                      </button>
-                    </div>
-                    <div class="col-auto">
-                      <button
-                        class="outline d-block text-truncate mb-0"
-                        (click)="$event.preventDefault(); deposit(item.currency)">
-                        {{'common.deposit' | translate}}
-                      </button>
-                    </div>
-                  </div>
+                  <span
+                    class="status-pill status-info"
+                    [ngClass]="{
+                      'status-success': item.type == balanceTransactionType.DEPOSIT,
+                      'status-warn': item.type == balanceTransactionType.WITHDRAW,
+                      'status-info': item.type == balanceTransactionType.TRANSFER
+                    }">
+                    {{item.type | titlecase}}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="status-pill"
+                    [ngClass]="{
+                      'status-info': item.status == balanceTransactionStatus.PENDING,
+                      'status-success': item.status == balanceTransactionStatus.ACCEPTED,
+                      'status-danger': item.status == balanceTransactionStatus.DECLINED
+                    }">
+                    {{item.status | titlecase}}
+                  </span>
+                </td>
+                <td>
+                  {{item.createdAt | date : dateFullFormat}}
                 </td>
               </tr>
             </ng-template>

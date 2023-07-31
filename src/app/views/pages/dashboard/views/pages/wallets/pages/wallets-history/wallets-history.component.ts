@@ -1,12 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
-import {startWith} from "rxjs";
 import {AppRoute} from "../../../../../../../../common/enums/app-route.enum";
 import {DashboardRoute} from "../../../../../common/enums/dashboard-route.enum";
 import {WalletsRoute} from "../../common/enums/top-up-route.enum";
 import {TopUpRoute} from "../../../top-up/common/enums/top-up-route.enum";
 import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-destroyer.directive";
+import {ApiService} from "../../../../../../../../services/api/api.service";
+import {AuthService} from "../../../../../../../../services/auth/auth.service";
+import {
+  EBalanceTransactionStatus,
+  EBalanceTransactionType,
+  IBalanceTransactionModel
+} from "../../../../../../../../common/models/domain/models";
+import {ISearchResponseDTO} from "../../../../../../../../common/models/domain/dto/search.dto";
+import {DateHelper} from "../../../../../../../../common/helpers/date.helper";
 
 @Component({
   selector: 'app-wallets-history',
@@ -15,67 +22,37 @@ import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-de
 })
 export class WalletsHistoryComponent extends ADestroyerDirective implements OnInit {
   public isLoading!: boolean;
-  public tableData = [
-    {
-      currency: 'BTC',
-      quantity: '0.00000',
-      usdPrice: 32000
-    },
-    {
-      currency: 'ETH',
-      quantity: '0.00000',
-      usdPrice: 1800
-    },
-    {
-      currency: 'LTC',
-      quantity: '0.00000',
-      usdPrice: 142
-    }
-  ];
-  public filteredItems: any[] = [];
-  public showBalance!: boolean;
-  public searchFormControl = new FormControl();
+  public rows: IBalanceTransactionModel[] = [];
+  public balanceTransactionType = EBalanceTransactionType;
+  public balanceTransactionStatus = EBalanceTransactionStatus;
+  public dateFullFormat: string = DateHelper.fullFormat;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private apiService: ApiService,
+    private authService: AuthService
   ) {
     super()
   }
 
   ngOnInit(): void {
     this.getData();
-    this.subSearchChanges();
-  }
-
-  private subSearchChanges(): void {
-    this.subs.add(
-      this.searchFormControl.valueChanges
-        .pipe(
-          startWith(null)
-        )
-        .subscribe({
-          next: (str: string | null) => {
-            if(str){
-              this.filteredItems = this.filterItems(str as string);
-            } else {
-              this.filteredItems = this.tableData;
-            }
-          }
-        })
-    )
-  }
-
-  private filterItems(searchTerm: string): any[] {
-    return this.tableData.filter(item => {
-      return item.currency?.toLowerCase()?.indexOf(searchTerm.toLowerCase()) !== -1
-    });
   }
 
   private getData(): void {
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    this.subs.add(
+      this.apiService.searchTransactions(this.authService.account.id)
+        .subscribe({
+          next: ({rows}: ISearchResponseDTO<IBalanceTransactionModel>) => {
+            this.rows = rows;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+          }
+        })
+    )
   }
 
   public withdraw(currency: string): void {
@@ -93,4 +70,6 @@ export class WalletsHistoryComponent extends ADestroyerDirective implements OnIn
       }
     })
   }
+
+  protected readonly EBalanceTransactionStatus = EBalanceTransactionStatus;
 }

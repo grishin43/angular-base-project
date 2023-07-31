@@ -5,13 +5,14 @@ import {ISessionCreateDTO} from "../../common/models/domain/dto/session.dto";
 import {
   EBalanceTransactionStatus,
   IAccountModel,
-  IBalanceTransaction,
+  IBalanceTransaction, IBalanceTransactionModel,
   IWallet
 } from "../../common/models/domain/models";
 import {environment} from "../../../environments/environment";
 import {IAccountCreate} from "../../common/models/account.model";
 import {CryptoPriceResponse} from "../../common/models/coinapi-response.model";
 import {BalanceWithdraw} from "../../common/models/balance.model";
+import {ISearchResponseDTO} from "../../common/models/domain/dto/search.dto";
 
 @Injectable()
 export class ApiService {
@@ -68,6 +69,13 @@ export class ApiService {
     } else {
       return this.http.get<CryptoPriceResponse>(`${this.cryptoApiDomain}/ticker/price?symbol=${toCurrency}${fromCurrency}`)
     }
+  }
+
+  public searchTransactions(accountId: string): Observable<ISearchResponseDTO<IBalanceTransactionModel>> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.get<ISearchResponseDTO<IBalanceTransactionModel>>(`${this.api}/balance-transaction?filter[accountId]=${accountId}&sort[createdAt]=desc`, {headers});
   }
 
   public getOrder(body: any): Observable<any> {

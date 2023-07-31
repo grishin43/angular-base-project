@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header__items">
         <div class="header__items-logo">
-          <a href="./index.html">
+          <a [routerLink]="'/'">
             <img src="assets/images/logo.png" alt="FinCoinz"/>
           </a>
         </div>
@@ -11,15 +11,39 @@
           <nav>
             <a [routerLink]="'/dashboard/wallets'">{{'common.wallets' | translate}}</a>
             <a [routerLink]="'/dashboard/wallets/exchange-tokens'">{{'common.exchange' | translate}}</a>
-            <a [routerLink]="'/dashboard/staking'">{{'common.staking' | translate}}</a>
-            <a [routerLink]="'/dashboard/about-us'">{{'common.aboutUs' | translate}}</a>
-            <a [routerLink]="'/dashboard/terms'">{{'common.terms' | translate}}</a>
+            <a [routerLink]="'/dashboard/wallets/history'">{{'common.history' | translate}}</a>
+            <a [routerLink]="'/about-us'">{{'common.aboutUs' | translate}}</a>
+            <a [routerLink]="'/terms'">{{'common.terms' | translate}}</a>
           </nav>
         </div>
-        <div class="header__items-btns">
-          <a href="./register.html">Login</a>
-        </div>
-        <div class="menu-btn" (click)="$event.preventDefault(); openMobileMenu = !openMobileMenu">
+        <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+          <div class="header__items-btns">
+            <a [routerLink]="'/auth'" style="display: none">Login</a>
+            <a [routerLink]="'/dashboard/top-up/order'" class="header__items-btns__deposit"><i class="gg-arrow-top-left-r"></i>Deposit</a>
+            <!-- Элемент, на который можно нажать -->
+            <a href="#" class="header__items-btns__user" (click)="$event.preventDefault(); toggleDropdown($event)">
+              <i class="gg-user"></i>
+            </a>
+            <!-- Контейнер выпадающего списка -->
+            <div class="dropdown" id="dropdownList">
+              <a [routerLink]="'/dashboard/account'"><i class="gg-user-add"></i>Account Settings</a>
+              <a [routerLink]="'/dashboard/security'"><i class="gg-shield"></i>Security</a>
+              <a [routerLink]="'/dashboard/wallets/history'"><i class="gg-play-list-search"></i>History</a>
+              <a (click)="$event.preventDefault(); signOut()"><i class="gg-log-off"></i>Sign Out</a>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <div class="header__items-btns">
+            <a [routerLink]="'/auth'">Login</a>
+          </div>
+        </ng-template>
+        <div
+          class="menu-btn"
+          (click)="$event.preventDefault(); openMobileMenu = !openMobileMenu"
+          [ngClass]="{
+            'active': openMobileMenu
+          }">
           <span></span>
           <span></span>
           <span></span>
@@ -30,12 +54,12 @@
             'active': openMobileMenu
           }">
           <nav>
-            <a [routerLink]="'auth'">{{'common.signIn' | translate}}</a>
+            <a [routerLink]="'/auth'">{{'common.signIn' | translate}}</a>
             <a [routerLink]="'/dashboard/wallets'">{{'common.wallets' | translate}}</a>
             <a [routerLink]="'/dashboard/wallets/exchange-tokens'">{{'common.exchange' | translate}}</a>
             <a [routerLink]="'/dashboard/staking'">{{'common.staking' | translate}}</a>
-            <a [routerLink]="'/dashboard/about-us'">{{'common.aboutUs' | translate}}</a>
-            <a [routerLink]="'/dashboard/terms'">{{'common.terms' | translate}}</a>
+            <a [routerLink]="'/about-us'">{{'common.aboutUs' | translate}}</a>
+            <a [routerLink]="'/terms'">{{'common.terms' | translate}}</a>
           </nav>
         </div>
       </div>

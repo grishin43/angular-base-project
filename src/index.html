@@ -21,8 +21,130 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/css.gg/icons/icons.css"
+    rel="stylesheet"
+  />
+
 </head>
 <body class="mat-typography">
   <app-root></app-root>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    //accordion
+
+    let acc = document.getElementsByClassName("accordion");
+    let i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", (e) => {
+        e.target.classList.toggle("active");
+        let panel = e.target.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + 35 + "px";
+        }
+      });
+    }
+
+    //dropdown btn
+
+    // Функция для переключения видимости выпадающего списка при клике на ссылку
+    function toggleDropdown(event) {
+      event.preventDefault(); // Отменяем действие по умолчанию (переход по ссылке)
+      let dropdownList = document.getElementById("dropdownList");
+      if (dropdownList.style.display === "block") {
+        dropdownList.style.display = "none";
+      } else {
+        dropdownList.style.display = "block";
+      }
+    }
+
+    // Закрываем выпадающий список, если клик происходит вне него
+    document.addEventListener("click", function (event) {
+      let dropdownList = document.getElementById("dropdownList");
+      let targetElement = event.target; // Кликнутый элемент
+      if(dropdownList && targetElement){
+        if (
+          dropdownList.style.display === "block" &&
+          !targetElement.closest(".header__items-btns__user")
+        ) {
+          dropdownList.style.display = "none";
+        }
+      }
+    });
+
+    ///password modal
+
+    const changePasswordButton = document.getElementById("change_password");
+    const passwordModal = document.getElementById("password-modal");
+
+    function openPasswordModal() {
+      passwordModal.style.display = "block";
+    }
+
+    function closePasswordModal() {
+      passwordModal.style.display = "none";
+    }
+
+    changePasswordButton && changePasswordButton.addEventListener("click", openPasswordModal);
+
+    window.addEventListener("click", function (event) {
+      if (event.target === passwordModal) {
+        closePasswordModal();
+      }
+    });
+
+    window.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closePasswordModal();
+      }
+    });
+
+    ////FA Modal
+    // Получение ссылок на кнопку и модальное окно
+    const twoFABtn = document.getElementById("FA");
+    const twoFAModal = document.getElementById("FA-modal");
+    const closeModalBtn = document.getElementById("FA-modal-close");
+
+    // Функция, которая открывает модальное окно
+    function openTwoFAModal() {
+      twoFAModal.style.display = "block";
+    }
+
+    // Функция, которая закрывает модальное окно
+    function closeTwoFAModal() {
+      twoFAModal.style.display = "none";
+    }
+
+    // Обработчик клика на кнопке "Edit"
+    twoFABtn && twoFABtn.addEventListener("click", openTwoFAModal);
+
+    // Закрытие модального окна при клике на кнопку "OK"
+    closeModalBtn && closeModalBtn.addEventListener("click", closeTwoFAModal);
+
+    // Закрытие модального окна при клике за его пределами
+    window.addEventListener("click", function (event) {
+      if (event.target === twoFAModal) {
+        closeTwoFAModal();
+      }
+    });
+
+    // Закрытие модального окна при нажатии на клавишу "Escape"
+    window.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeTwoFAModal();
+      }
+    });
+
+    ///есть еще скрипты в wallet.html модалка
+  });
+</script>
 </body>
 </html>

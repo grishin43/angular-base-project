@@ -1,0 +1,71 @@
+<div class="d-flex justify-content-center mt-5 mb-5">
+  <div class="content-box-md">
+    <h3 class="text-center mb-4">
+      {{'common.generalInformation' | translate}}
+    </h3>
+    <div class="row gx-2">
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label for="firstName">
+            {{'common.firstName' | translate}}
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="Joe"
+            required
+            [value]="account.firstName">
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label for="lastName">
+            {{'common.lastName' | translate}}
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="Black"
+            required
+            [value]="account.lastName">
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label for="email">
+            {{'common.email' | translate}}
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="***.***@***.com"
+            required
+            [value]="account.email">
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label for="phone">
+            {{'common.phone' | translate}}
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="+44 *** *** ****"
+            required>
+        </div>
+      </div>
+    </div>
+    <button
+      class="mb-0"
+      type="submit"
+      [attr.aria-busy]="isLoading"
+      (click)="$event.preventDefault(); submit()">
+      {{'common.update' | translate}}
+    </button>
+  </div>
+</div>

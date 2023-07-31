@@ -57,6 +57,11 @@ export class SignUpComponent extends ADestroyerDirective implements OnInit {
         this.apiService.signUp(body as IAccountCreate)
           .subscribe({
             next: (account: IAccountModel) => {
+              this.toastService.show({
+                i18nKey: 'common.signUpSuccess',
+                type: "success",
+                duration: 5000
+              });
               this.authService.signIn(account);
               this.isLoading = false;
             },

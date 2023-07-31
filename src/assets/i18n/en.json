@@ -61,7 +61,21 @@
     "withdrawSuccessfully": "Your withdraw completed successfully.\nWait for the balance updates, usually it takes up to 15 minutes.",
     "currentRate": "Current rate",
     "fee": "Fee",
-    "network": "Network"
+    "network": "Network",
+    "signUpSuccess": "Your account was successfully created, you'll be automatically logged into the system.",
+    "history": "History",
+    "type": "Type",
+    "transactionHistory": "Transaction history",
+    "generalInformation": "General Information",
+    "phone": "Phone",
+    "security": "Security",
+    "edit": "Edit",
+    "disabled": "Disabled",
+    "dataUpdated": "Profile successfully updated!",
+    "update": "Update",
+    "passwordUpdated": "Password successfully updated",
+    "changePassword": "Change password",
+    "oldPassword": "Old password"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",

@@ -11,6 +11,8 @@ import {WalletsExchangeComponent} from './pages/wallets-exchange/wallets-exchang
 import {MatIconModule} from "@angular/material/icon";
 import { WalletsHistoryComponent } from './pages/wallets-history/wallets-history.component';
 import {DigitsOnlyModule} from "../../../../../../shared/digits-only/digits-only.module";
+import {CopyToClipboardModule} from "../../../../../../shared/directives/copy-to-clipboard/copy-to-clipboard.module";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -20,15 +22,17 @@ import {DigitsOnlyModule} from "../../../../../../shared/digits-only/digits-only
     WalletsExchangeComponent,
     WalletsHistoryComponent
   ],
-    imports: [
-        CommonModule,
-        WalletsRoutingModule,
-        MatProgressSpinnerModule,
-        TranslateModule,
-        ReactiveFormsModule,
-        MatIconModule,
-        DigitsOnlyModule
-    ]
+  imports: [
+    CommonModule,
+    WalletsRoutingModule,
+    MatProgressSpinnerModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    DigitsOnlyModule,
+    CopyToClipboardModule,
+    MatTooltipModule
+  ]
 })
 export class WalletsModule {
 }
