@@ -12,16 +12,28 @@
       <span>{{currentOrigin}}</span>
     </span>
     <div class="form-group">
-      <label for="fullName">
-        {{'common.fullName' | translate}}
+      <label for="firstName">
+        {{'common.firstName' | translate}}
       </label>
       <input
         type="text"
-        id="fullName"
-        name="fullName"
-        placeholder="Joe Black"
+        id="firstName"
+        name="firstName"
+        placeholder="Joe"
         required
-        [formControlName]="'fullName'">
+        [formControlName]="'firstName'">
+    </div>
+    <div class="form-group">
+      <label for="lastName">
+        {{'common.lastName' | translate}}
+      </label>
+      <input
+        type="text"
+        id="lastName"
+        name="firstName"
+        placeholder="Black"
+        required
+        [formControlName]="'lastName'">
     </div>
     <div class="form-group">
       <label for="email">

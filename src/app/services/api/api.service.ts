@@ -1,22 +1,26 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {delay, Observable, of} from "rxjs";
-import {ApiRouteEnum} from "./api-route.enum";
 import {ISessionCreateDTO} from "../../common/models/domain/dto/session.dto";
-import {ISessionModel} from "../../common/models/domain/models/session.model";
-import {EBalanceTransactionStatus} from "../../common/models/domain/models";
+import {EBalanceTransactionStatus, IAccountModel} from "../../common/models/domain/models";
+import {environment} from "../../../environments/environment";
+import {IAccountCreate} from "../../common/models/account.model";
 
 @Injectable()
 export class ApiService {
-  protected api: string = '';
+  protected api: string = environment.apiDomain;
 
   constructor(
     private http: HttpClient
   ) {
   }
 
-  public signIn({email, password}: ISessionCreateDTO): Observable<ISessionModel> {
-    return this.http.post<ISessionModel>(`${this.api}/${ApiRouteEnum.SESSION}`, {email, password});
+  public signIn({email, password}: ISessionCreateDTO): Observable<IAccountModel> {
+    return this.http.post<IAccountModel>(`${this.api}/account/login`, {email, password});
+  }
+
+  public signUp(body: IAccountCreate): Observable<IAccountModel> {
+    return this.http.post<IAccountModel>(`${this.api}/account/signUP`, body);
   }
 
   public getOrder(body: any): Observable<any> {

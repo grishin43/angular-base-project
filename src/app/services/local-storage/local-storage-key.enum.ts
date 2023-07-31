@@ -1,5 +1,5 @@
 export enum LocalStorageKey {
-  SESSION = 'session',
+  ACCOUNT = 'account',
   PAGE_SIZE = 'pageSize',
   LANGUAGE = 'lang'
 }

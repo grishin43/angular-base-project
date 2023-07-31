@@ -3,35 +3,39 @@
     <div class="container">
       <div class="header__items">
         <div class="header__items-logo">
-          <a href="./index.html"
-          ><img src="./images/logo.png" alt="FinCoinz"
-          /></a>
+          <a href="./index.html">
+            <img src="assets/images/logo.png" alt="FinCoinz"/>
+          </a>
         </div>
         <div class="header__items-links">
           <nav>
-            <a href="./wallet.html">Wallets</a>
-            <a href="./exchange.html">Exchange</a>
-            <a href="./staking.html">Staking</a>
-            <a href="./about-us.html">About us</a>
-            <a href="./terms.html">Terms</a>
+            <a [routerLink]="'/dashboard/wallets'">{{'common.wallets' | translate}}</a>
+            <a [routerLink]="'/dashboard/wallets/exchange-tokens'">{{'common.exchange' | translate}}</a>
+            <a [routerLink]="'/dashboard/staking'">{{'common.staking' | translate}}</a>
+            <a [routerLink]="'/dashboard/about-us'">{{'common.aboutUs' | translate}}</a>
+            <a [routerLink]="'/dashboard/terms'">{{'common.terms' | translate}}</a>
           </nav>
         </div>
         <div class="header__items-btns">
           <a href="./register.html">Login</a>
         </div>
-        <div class="menu-btn">
+        <div class="menu-btn" (click)="$event.preventDefault(); openMobileMenu = !openMobileMenu">
           <span></span>
           <span></span>
           <span></span>
         </div>
-        <div class="menu">
+        <div
+          class="menu"
+          [ngClass]="{
+            'active': openMobileMenu
+          }">
           <nav>
-            <a href="./register.html">Login</a>
-            <a href="./wallet.html">Wallets</a>
-            <a href="./exchange.html">Exchange</a>
-            <a href="./staking.html">Staking</a>
-            <a href="./about-us.html">About us</a>
-            <a href="./terms.html">Terms</a>
+            <a [routerLink]="'auth'">{{'common.signIn' | translate}}</a>
+            <a [routerLink]="'/dashboard/wallets'">{{'common.wallets' | translate}}</a>
+            <a [routerLink]="'/dashboard/wallets/exchange-tokens'">{{'common.exchange' | translate}}</a>
+            <a [routerLink]="'/dashboard/staking'">{{'common.staking' | translate}}</a>
+            <a [routerLink]="'/dashboard/about-us'">{{'common.aboutUs' | translate}}</a>
+            <a [routerLink]="'/dashboard/terms'">{{'common.terms' | translate}}</a>
           </nav>
         </div>
       </div>

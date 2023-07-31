@@ -1,3 +1,5 @@
+import {IBalanceTransactionModel, IExchangeBalanceModel, IStakingBalanceModel} from "./balance.model";
+
 export interface IAccount {
   id: string;
   email: string;
@@ -11,4 +13,7 @@ export interface IAccount {
 }
 
 export interface IAccountModel extends IAccount {
+  balanceTransactions: IBalanceTransactionModel[];
+  exchangeBalance: IExchangeBalanceModel;
+  stakingBalance: IStakingBalanceModel;
 }

@@ -66,6 +66,11 @@ app-root {
 
 td, th {
   border-color: rgba(#ffffff, 0.15);
+  white-space: nowrap;
+}
+
+.table-wrapper {
+  overflow: auto;
 }
 
 app-header {

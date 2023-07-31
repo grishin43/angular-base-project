@@ -1,14 +1,29 @@
 import {Injectable} from '@angular/core';
-import {of} from "rxjs";
+import {IAccountModel} from "../../common/models/domain/models";
+import {Router} from "@angular/router";
+import {AppRoute} from "../../common/enums/app-route.enum";
+import {LocalStorageService} from "../local-storage/local-storage.service";
+import {LocalStorageKey} from "../local-storage/local-storage-key.enum";
 
 @Injectable()
 export class AuthService {
+  public account!: IAccountModel;
 
-  constructor() {
+  constructor(
+    private localstorageService: LocalStorageService,
+    private router: Router
+  ) {
+    this.setCachedAccount();
   }
 
-  public getAccount(): any {
-    return of(true);
+  private setCachedAccount(): void {
+    this.account = this.localstorageService.getItem(LocalStorageKey.ACCOUNT);
+  }
+
+  public signIn(account: IAccountModel): void {
+    this.localstorageService.setItem(LocalStorageKey.ACCOUNT, account);
+    this.account = account;
+    this.router.navigate([`/${AppRoute.DASHBOARD}`]);
   }
 
 }

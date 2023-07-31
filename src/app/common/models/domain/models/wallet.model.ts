@@ -10,10 +10,10 @@ export enum EWalletCurrency {
 export interface IWallet {
   id: string;
   name: string;
+  address: string;
   currency: EWalletCurrency;
   balance: number;
   isBusy: boolean;
-  code: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

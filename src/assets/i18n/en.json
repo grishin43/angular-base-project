@@ -51,11 +51,18 @@
     "iGive": "I give",
     "iReceive": "I receive",
     "exchangeTokens": "Exchange tokens",
-    "tokenChangeSuccessfully": "Tokens have been successfully exchanged.\nWait for the balance updates, usually it takes up to 15 minutes."
+    "tokenChangeSuccessfully": "Tokens have been successfully exchanged.\nWait for the balance updates, usually it takes up to 15 minutes.",
+    "wallets": "Wallets",
+    "staking": "Staking",
+    "aboutUs": "About us",
+    "terms": "Terms",
+    "firstName": "First name",
+    "lastName": "Last name"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",
     "transactionTimeoutExpired": "Transaction timeout expired",
-    "fillAllRequiredFields": "Please, fill all required fields"
+    "fillAllRequiredFields": "Please, fill all required fields",
+    "incorrectLoginOrPassword": "Invalid account credentials"
   }
 }

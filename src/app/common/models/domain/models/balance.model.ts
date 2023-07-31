@@ -1,4 +1,5 @@
-import { EWalletCurrency } from './wallet.model';
+import {EWalletCurrency} from './wallet.model';
+import {IAccountModel} from "./account.model";
 
 export interface IExchangeBalance {
   id: string;
@@ -29,15 +30,17 @@ export interface IStakingBalance {
 }
 
 export interface IExchangeBalanceModel extends IExchangeBalance {
-
+  account: IAccountModel;
 }
-export interface IStakingBalanceModel extends IStakingBalance {
 
+export interface IStakingBalanceModel extends IStakingBalance {
+  account: IAccountModel;
 }
 
 export enum EBalanceTransactionType {
   DEPOSIT = 'DEPOSIT',
   WITHDRAW = 'WITHDRAW',
+  TRANSFER = 'TRANSFER',
 }
 
 export enum EBalanceTransactionStatus {
@@ -48,6 +51,8 @@ export enum EBalanceTransactionStatus {
 
 export interface IBalanceTransaction {
   id: string;
+  accountId: string;
+  amount: number;
   type: EBalanceTransactionType;
   status: EBalanceTransactionStatus;
   currency: EWalletCurrency;
@@ -55,8 +60,9 @@ export interface IBalanceTransaction {
   to: string;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
 }
 
 export interface IBalanceTransactionModel extends IBalanceTransaction {
-
+  account: IAccountModel;
 }
