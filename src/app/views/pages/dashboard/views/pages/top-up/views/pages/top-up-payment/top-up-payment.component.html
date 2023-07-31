@@ -47,7 +47,7 @@
                   type="text"
                   id="address"
                   disabled
-                  [value]="order ? order.address : '...'">
+                  [value]="order ? order.to : '...'">
               </div>
             </div>
             <div class="col-auto">
@@ -56,7 +56,7 @@
                 copyToClipboard
                 [matTooltip]="'common.copyToClipboard' | translate"
                 [disabled]="isLoading"
-                [clipboardText]="order ? order.address : '...'">
+                [clipboardText]="order ? order.to : '...'">
                 <mat-icon>file_copy</mat-icon>
               </button>
             </div>
@@ -66,7 +66,7 @@
           class="d-block m-auto"
           width="185"
           height="185"
-          [attr.src]="order && order.qrCode">
+          [attr.src]="order && qrCode">
         <div class="text-center mt-3">
           <p class="mb-1">{{'common.validThrough' | translate}}</p>
           <h4 class="m-0 text-primary">{{clock}}</h4>
@@ -110,7 +110,7 @@
               <span class="text-secondary">{{'common.paymentMethod' | translate}}:</span>
             </div>
             <div class="col-6">
-              <span class="text-end text-truncate d-block">{{order ? order.paymentMethod : '-'}}</span>
+              <span class="text-end text-truncate d-block">{{order ? order.network : '-'}}</span>
             </div>
           </div>
           <div class="row">
@@ -126,7 +126,7 @@
               <span class="text-secondary">{{'common.replenishment' | translate}}:</span>
             </div>
             <div class="col-6">
-              <span class="text-end text-truncate d-block">{{order ? order.topUpFee : '-'}}</span>
+              <span class="text-end text-truncate d-block">{{topUpFee}}</span>
             </div>
           </div>
           <div class="row">
@@ -134,7 +134,7 @@
               <span class="text-secondary">{{'common.totalAmount' | translate}}:</span>
             </div>
             <div class="col-6">
-              <span class="text-end text-truncate d-block">{{order ? order.totalAmount : '-'}}</span>
+              <span class="text-end text-truncate d-block">{{order ? order.amount : '-'}}</span>
             </div>
           </div>
           <div class="row">

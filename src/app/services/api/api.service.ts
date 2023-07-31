@@ -1,18 +1,22 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {delay, Observable, of} from "rxjs";
+import {catchError, delay, map, Observable, of} from "rxjs";
 import {ISessionCreateDTO} from "../../common/models/domain/dto/session.dto";
-import {EBalanceTransactionStatus, IAccountModel} from "../../common/models/domain/models";
+import {
+  EBalanceTransactionStatus,
+  IAccountModel,
+  IBalanceTransaction,
+  IWallet
+} from "../../common/models/domain/models";
 import {environment} from "../../../environments/environment";
 import {IAccountCreate} from "../../common/models/account.model";
-import {CoinapiRateResponse} from "../../common/models/coinapi-response.model";
+import {CryptoPriceResponse} from "../../common/models/coinapi-response.model";
 import {BalanceWithdraw} from "../../common/models/balance.model";
 
 @Injectable()
 export class ApiService {
   protected api: string = environment.apiDomain;
-  protected coinApiDomain: string = environment.coinApiDomain;
-  protected coinApiKey: string = environment.coinApiKey;
+  protected cryptoApiDomain: string = environment.cryptoApiDomain;
 
   constructor(
     private http: HttpClient
@@ -34,11 +38,36 @@ export class ApiService {
     return this.http.post<void>(`${this.api}/balance-transaction/withdraw/${accountId}`, body, {headers});
   }
 
-  public getExchangeRateToUsd(token: string): Observable<CoinapiRateResponse> {
+  public generateAddress(currency: string, network: string, accountId: string): Observable<IWallet> {
     const headers: HttpHeaders = new HttpHeaders({
-      'X-CoinAPI-Key': this.coinApiKey
+      'x-account-id': accountId
     });
-    return this.http.get<CoinapiRateResponse>(`${this.coinApiDomain}/exchangerate/${token}/USD`, {headers})
+    return this.http.get<IWallet>(`${this.api}/wallet/generate-address?currency=${currency}&network=${network}`, {headers});
+  }
+
+  public createTransaction(body: any, accountId: string): Observable<IBalanceTransaction> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.post<IBalanceTransaction>(`${this.api}/balance-transaction/deposit/${accountId}`, body, {headers});
+  }
+
+  public findTransaction(id: string, accountId: string): Observable<IBalanceTransaction> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.get<IBalanceTransaction>(`${this.api}/balance-transaction/${id}`, {headers});
+  }
+
+  public getExchangeRate(fromCurrency: string, toCurrency = 'USDT'): Observable<CryptoPriceResponse> {
+    if (fromCurrency === toCurrency) {
+      return of({
+        symbol: toCurrency,
+        price: '1.00000000'
+      })
+    } else {
+      return this.http.get<CryptoPriceResponse>(`${this.cryptoApiDomain}/ticker/price?symbol=${toCurrency}${fromCurrency}`)
+    }
   }
 
   public getOrder(body: any): Observable<any> {

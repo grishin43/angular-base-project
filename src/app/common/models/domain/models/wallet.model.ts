@@ -7,11 +7,21 @@ export enum EWalletCurrency {
   LTC = 'LTC',
 }
 
+export enum EWalletNetwork {
+  TRC20 = 'TRC20',
+  Bitcoin = 'Bitcoin',
+  Etherum = 'Etherum',
+  Solana = 'Solana',
+  StartChain = 'StartChain',
+  Litecoin = 'Litecoin',
+}
+
 export interface IWallet {
   id: string;
   name: string;
   address: string;
   currency: EWalletCurrency;
+  network: EWalletNetwork;
   balance: number;
   isBusy: boolean;
   createdAt: Date;

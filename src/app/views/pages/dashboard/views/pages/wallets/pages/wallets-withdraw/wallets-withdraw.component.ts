@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-destroyer.directive";
-import {KeyValue} from "@angular/common";
 import {ToastService} from "../../../../../../../../services/toast/toast.service";
 import {AuthService} from "../../../../../../../../services/auth/auth.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -9,9 +8,11 @@ import {ApiService} from "../../../../../../../../services/api/api.service";
 import {BalanceWithdraw} from "../../../../../../../../common/models/balance.model";
 import {AnimationsHelper} from "../../../../../../../../common/helpers/animations.helper";
 import {AppRoute} from "../../../../../../../../common/enums/app-route.enum";
+import {BalanceCurrency} from "../../../../../../../../common/models/domain/models";
 
 export interface WithdrawForm {
   currency: FormControl<string | null>;
+  network: FormControl<string | null>;
   amount: FormControl<number | null>;
   to: FormControl<string | null>;
 }
@@ -26,33 +27,9 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
   public formGroup!: FormGroup<WithdrawForm>;
   public isLoading: boolean = false;
   public isSuccessfull!: boolean;
-  public paymentMethods: KeyValue<string, string>[] = [
-    {
-      key: 'USDT (TRC20)',
-      value: 'USDT'
-    },
-    {
-      key: 'BTC',
-      value: 'BTC'
-    },
-    {
-      key: 'ETH',
-      value: 'ETH'
-    },
-    {
-      key: 'XRP',
-      value: 'XRP'
-    },
-    {
-      key: 'BNB',
-      value: 'BNB'
-    },
-    {
-      key: 'LTC',
-      value: 'LTC'
-    }
-  ];
+  public paymentMethods!: BalanceCurrency[];
   public tokenAvailableBalance: number = 0;
+  public availableNetworks: string[];
 
   constructor(
     private toastService: ToastService,
@@ -62,6 +39,7 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
     private router: Router
   ) {
     super()
+    this.paymentMethods = this.authService.paymentMethods;
   }
 
   ngOnInit(): void {
@@ -77,9 +55,16 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
           next: (token: string | null) => {
             if (token) {
               this.tokenAvailableBalance = this.authService.account.exchangeBalance[token] || 0;
+              const matchNetwork = this.paymentMethods.find((pm: BalanceCurrency) => pm.type === token)?.network;
+              if (matchNetwork) {
+                this.availableNetworks = [matchNetwork];
+                this.formGroup.get('network')?.patchValue(matchNetwork);
+              }
             } else {
               this.tokenAvailableBalance = 0;
+              this.availableNetworks = [];
             }
+            this.formGroup.get('amount')?.patchValue(this.tokenAvailableBalance);
           }
         })
     )
@@ -88,7 +73,7 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
   private subscribeRoute(): void {
     this.subs.add(
       this.activatedRoute.queryParams.subscribe((params: Params) => {
-        this.formGroup.get('currency')?.patchValue(params['token'] || this.paymentMethods[0].value);
+        this.formGroup.get('currency')?.patchValue(params['token'] || this.paymentMethods[0].type);
       })
     );
   }
@@ -96,6 +81,7 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
   private initForm(): void {
     this.formGroup = new FormGroup<WithdrawForm>({
       currency: new FormControl(null, [Validators.required]),
+      network: new FormControl(null, [Validators.required]),
       amount: new FormControl(null, [Validators.required]),
       to: new FormControl(null, [Validators.required]),
     })

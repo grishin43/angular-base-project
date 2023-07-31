@@ -1,6 +1,4 @@
-export interface CoinapiRateResponse {
-  asset_id_base: string;
-  asset_id_quote: string;
-  rate: number;
-  time: string;
+export interface CryptoPriceResponse {
+  symbol: string;
+  price: string;
 }

@@ -11,7 +11,7 @@ import {AuthService} from "../../../../../../../../services/auth/auth.service";
 import {IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
 import {mapExchangeBalance, mapExchangeBalanceRate} from "../../common/helpers/wallets-mapper";
 import {ApiService} from "../../../../../../../../services/api/api.service";
-import {CoinapiRateResponse} from "../../../../../../../../common/models/coinapi-response.model";
+import {CryptoPriceResponse} from "../../../../../../../../common/models/coinapi-response.model";
 
 export interface BalanceRow {
   icon: string;
@@ -79,9 +79,19 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
       this.rows = mapExchangeBalance(exchangeBalance);
       this.subs.add(
         forkJoin(
-          this.rows.map((row) => this.apiService.getExchangeRateToUsd(row.currency))
+          this.rows.map((row) => {
+            return this.apiService.getExchangeRate('USDT', row.currency)
+              .pipe(
+                map((res: CryptoPriceResponse) => {
+                  return {
+                    symbol: res.symbol.replace('USDT', ''),
+                    price: res.price
+                  }
+                })
+              )
+          })
         ).pipe(
-          map((res: CoinapiRateResponse[]) => mapExchangeBalanceRate(this.rows, res))
+          map((res: CryptoPriceResponse[]) => mapExchangeBalanceRate(this.rows, res))
         ).subscribe({
           next: (rows: BalanceRow[]) => {
             this.rows = rows;

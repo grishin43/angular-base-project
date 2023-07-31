@@ -36,9 +36,23 @@
         id="paymentMethod"
         [formControlName]="'currency'">
         <option
-          [value]="pm.value"
+          [value]="pm.type"
           *ngFor="let pm of paymentMethods">
-          {{pm.key}}
+          {{pm.type}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="network">
+        {{'common.network' | translate}}
+      </label>
+      <select
+        id="network"
+        [formControlName]="'network'">
+        <option
+          [value]="network"
+          *ngFor="let network of availableNetworks">
+          {{network}}
         </option>
       </select>
     </div>
@@ -66,7 +80,7 @@
         name="to"
         placeholder="*****eqM7cr7e******TUSTXZz*****DP"
         required
-        [formControlName]="'address'">
+        [formControlName]="'to'">
     </div>
     <button
       class="mb-0"

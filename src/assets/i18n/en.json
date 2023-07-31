@@ -58,7 +58,10 @@
     "terms": "Terms",
     "firstName": "First name",
     "lastName": "Last name",
-    "withdrawSuccessfully": "Your withdraw completed successfully.\nWait for the balance updates, usually it takes up to 15 minutes."
+    "withdrawSuccessfully": "Your withdraw completed successfully.\nWait for the balance updates, usually it takes up to 15 minutes.",
+    "currentRate": "Current rate",
+    "fee": "Fee",
+    "network": "Network"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",

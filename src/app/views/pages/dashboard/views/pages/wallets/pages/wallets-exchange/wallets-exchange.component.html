@@ -40,11 +40,11 @@
           <select
             class="mb-0"
             id="currencyFrom"
-            [formControlName]="'currencyFrom'">
+            [formControlName]="'fromCurrency'">
             <option
-              [value]="pm.value"
+              [value]="pm.type"
               *ngFor="let pm of paymentMethods">
-              {{pm.key}}
+              {{pm.type}}
             </option>
           </select>
         </div>
@@ -60,11 +60,11 @@
           <select
             class="mb-0"
             id="currencyTo"
-            [formControlName]="'currencyTo'">
+            [formControlName]="'toCurrency'">
             <option
-              [value]="pm.value"
+              [value]="pm.type"
               *ngFor="let pm of paymentMethods">
-              {{pm.key}}
+              {{pm.type}}
             </option>
           </select>
         </div>
@@ -82,7 +82,8 @@
             name="currencyFromCount"
             placeholder="100"
             required
-            [formControlName]="'currencyFromCount'">
+            digitsOnly
+            [formControlName]="'fromAmount'">
           <small class="mb-0">{{'common.availableBalance' | translate}}: <span class="text-primary">{{availableBalanceFrom}}</span></small>
         </div>
       </div>
@@ -100,7 +101,8 @@
             name="iReceive"
             placeholder="100"
             required
-            [formControlName]="'currencyToCount'">
+            digitsOnly
+            [formControlName]="'toAmount'">
           <small class="mb-0">{{'common.availableBalance' | translate}}: <span class="text-primary">{{availableBalanceTo}}</span></small>
         </div>
       </div>
@@ -108,13 +110,15 @@
     <div class="row mt-3 mb-3">
       <div class="col-auto">
         <div class="form-group">
-          <span class="d-block">Current rate:</span>
-          <small class="bottom-dashed">1 ETH  ≈  0.00 BTC</small>
+          <span class="d-block">{{'common.currentRate' | translate}}:</span>
+          <small class="bottom-dashed">
+            1 {{fromCurrency}}  ≈  {{toExchangeRate}} {{toCurrency}}
+          </small>
         </div>
       </div>
       <div class="col-auto">
         <div class="form-group">
-          <span class="d-block">Fee:</span>
+          <span class="d-block">{{'common.fee' | translate}}:</span>
           <small class="bottom-dashed">{{exchangeFee}}%</small>
         </div>
       </div>

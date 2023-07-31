@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IAccountModel} from "../../common/models/domain/models";
+import {BalanceCurrency, IAccountModel} from "../../common/models/domain/models";
 import {Router} from "@angular/router";
 import {AppRoute} from "../../common/enums/app-route.enum";
 import {LocalStorageService} from "../local-storage/local-storage.service";
@@ -18,6 +18,10 @@ export class AuthService {
 
   private setCachedAccount(): void {
     this.account = this.localstorageService.getItem(LocalStorageKey.ACCOUNT);
+  }
+
+  public get paymentMethods(): BalanceCurrency[] {
+    return (this.account && this.account.exchangeBalance.currencies) || [];
   }
 
   public signIn(account: IAccountModel): void {

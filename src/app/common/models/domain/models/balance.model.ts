@@ -1,15 +1,16 @@
-import {EWalletCurrency} from './wallet.model';
+import {EWalletCurrency, EWalletNetwork} from './wallet.model';
 import {IAccountModel} from "./account.model";
+
+export type BalanceCurrency = {
+  type: EWalletCurrency;
+  network: EWalletNetwork;
+  balance: number;
+}
 
 export interface IExchangeBalance {
   id: string;
   accountId: string;
-  USDT: number;
-  BTC: number;
-  ETH: number;
-  XRP: number;
-  BNB: number;
-  LTC: number;
+  currencies: BalanceCurrency[],
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -18,12 +19,7 @@ export interface IExchangeBalance {
 export interface IStakingBalance {
   id: string;
   accountId: string;
-  USDT: number;
-  BTC: number;
-  ETH: number;
-  XRP: number;
-  BNB: number;
-  LTC: number;
+  currencies: BalanceCurrency[],
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -56,6 +52,7 @@ export interface IBalanceTransaction {
   type: EBalanceTransactionType;
   status: EBalanceTransactionStatus;
   currency: EWalletCurrency;
+  network: EWalletNetwork;
   from: string;
   to: string;
   createdAt: Date;

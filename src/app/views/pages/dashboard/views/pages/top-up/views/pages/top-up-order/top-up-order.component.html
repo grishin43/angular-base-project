@@ -15,11 +15,25 @@
       </label>
       <select
         id="paymentMethod"
-        [formControlName]="'paymentMethod'">
+        [formControlName]="'currency'">
         <option
-          [value]="pm.value"
+          [value]="pm.type"
           *ngFor="let pm of paymentMethods">
-          {{pm.key}}
+          {{pm.type}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="network">
+        {{'common.network' | translate}}
+      </label>
+      <select
+        id="network"
+        [formControlName]="'network'">
+        <option
+          [value]="network"
+          *ngFor="let network of availableNetworks">
+          {{network}}
         </option>
       </select>
     </div>
