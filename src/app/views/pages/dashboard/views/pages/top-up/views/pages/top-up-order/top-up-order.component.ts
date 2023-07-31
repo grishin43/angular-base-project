@@ -3,11 +3,12 @@ import {ADestroyerDirective} from "../../../../../../../../../common/abstracts/a
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {KeyValue} from "@angular/common";
 import {ApiService} from "../../../../../../../../../services/api/api.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {TopUpRoute} from "../../../common/enums/top-up-route.enum";
 import {DashboardRoute} from "../../../../../../common/enums/dashboard-route.enum";
 import {AppRoute} from "../../../../../../../../../common/enums/app-route.enum";
 import {ToastService} from "../../../../../../../../../services/toast/toast.service";
+import {environment} from "../../../../../../../../../../environments/environment";
 
 export interface TopUpForm {
   paymentMethod: FormControl<string | null>;
@@ -23,13 +24,13 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
   public formGroup!: FormGroup<TopUpForm>;
   public isLoading: boolean = false;
 
-  public readonly minUsdDeposit: number = 100;
-  public readonly topUpFee: number = 0;
+  public readonly minUsdDeposit: number = environment.minUsdDeposit;
+  public readonly topUpFee: number = environment.topUpFee;
 
   public paymentMethods: KeyValue<string, string>[] = [
     {
       key: 'USDT (TRC20)',
-      value: 'usdt-trc-20'
+      value: 'USDT'
     },
     {
       key: 'BTC',
@@ -40,6 +41,14 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
       value: 'ETH'
     },
     {
+      key: 'XRP',
+      value: 'XRP'
+    },
+    {
+      key: 'BNB',
+      value: 'BNB'
+    },
+    {
       key: 'LTC',
       value: 'LTC'
     }
@@ -48,23 +57,46 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private activatedRoute: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit() {
-    this.initForm(this.paymentMethods[0].value, 100);
+    this.initForm();
+    this.subscribeRoute();
   }
 
   public onSubmit(): void {
-    this.getOrder();
+    if (this.formGroup.valid) {
+      this.getOrder();
+    } else {
+      this.toastService.show({
+        i18nKey: (parseFloat(String(this.formGroup.get('amount')?.value as number)) < this.minUsdDeposit)
+          ? 'errors.amountLowerThanMin'
+          : 'errors.fillAllRequiredFields',
+        i18nInterpolateParams: {
+          amount: this.minUsdDeposit.toString()
+        },
+        type: "error",
+        duration: 5000
+      });
+    }
   }
 
-  private initForm(initialPaymentMethod: string | null, initialAmount: number): void {
+  private subscribeRoute(): void {
+    this.subs.add(
+      this.activatedRoute.queryParams.subscribe((params: Params) => {
+        this.formGroup.get('paymentMethod')?.patchValue(params['token'] || this.paymentMethods[0].value);
+      })
+    );
+  }
+
+  private initForm(): void {
     this.formGroup = new FormGroup<TopUpForm>({
-      paymentMethod: new FormControl(initialPaymentMethod, [Validators.required]),
-      amount: new FormControl(initialAmount, [Validators.required]),
+      paymentMethod: new FormControl(null, [Validators.required]),
+      amount: new FormControl(this.minUsdDeposit, [Validators.required, Validators.min(this.minUsdDeposit)]),
     })
   }
 

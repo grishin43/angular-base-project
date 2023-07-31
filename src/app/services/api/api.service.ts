@@ -6,6 +6,7 @@ import {EBalanceTransactionStatus, IAccountModel} from "../../common/models/doma
 import {environment} from "../../../environments/environment";
 import {IAccountCreate} from "../../common/models/account.model";
 import {CoinapiRateResponse} from "../../common/models/coinapi-response.model";
+import {BalanceWithdraw} from "../../common/models/balance.model";
 
 @Injectable()
 export class ApiService {
@@ -24,6 +25,13 @@ export class ApiService {
 
   public signUp(body: IAccountCreate): Observable<IAccountModel> {
     return this.http.post<IAccountModel>(`${this.api}/account/signUP`, body);
+  }
+
+  public doBalanceWithdraw(body: BalanceWithdraw, accountId: string): Observable<void> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.post<void>(`${this.api}/balance-transaction/withdraw/${accountId}`, body, {headers});
   }
 
   public getExchangeRateToUsd(token: string): Observable<CoinapiRateResponse> {

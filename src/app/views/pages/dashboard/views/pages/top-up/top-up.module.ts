@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {CopyToClipboardModule} from "../../../../../../shared/directives/copy-to-clipboard/copy-to-clipboard.module";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {DigitsOnlyModule} from "../../../../../../shared/digits-only/digits-only.module";
 
 @NgModule({
   declarations: [
@@ -17,16 +18,17 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     TopUpOrderComponent,
     TopUpPaymentComponent
   ],
-  imports: [
-    CommonModule,
-    TopUpRoutingModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    MatTooltipModule,
-    CopyToClipboardModule,
-    MatProgressSpinnerModule
-  ]
+    imports: [
+        CommonModule,
+        TopUpRoutingModule,
+        TranslateModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatTooltipModule,
+        CopyToClipboardModule,
+        MatProgressSpinnerModule,
+        DigitsOnlyModule
+    ]
 })
 export class TopUpModule {
 }

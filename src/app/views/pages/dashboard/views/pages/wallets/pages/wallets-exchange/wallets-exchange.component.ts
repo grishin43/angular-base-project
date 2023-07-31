@@ -6,6 +6,7 @@ import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-de
 import {ToastService} from "../../../../../../../../services/toast/toast.service";
 import {AppRoute} from "../../../../../../../../common/enums/app-route.enum";
 import {Router} from "@angular/router";
+import {environment} from "../../../../../../../../../environments/environment";
 
 export interface ExchangeForm {
   currencyFrom: FormControl<string | null>;
@@ -24,6 +25,8 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
   public formGroup!: FormGroup<ExchangeForm>;
   public isLoading!: boolean;
   public isSuccessfull!: boolean;
+
+  public readonly exchangeFee: number = environment.exchangeFee;
 
   public paymentMethods: KeyValue<string, string>[] = [
     {

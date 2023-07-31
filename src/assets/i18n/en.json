@@ -57,12 +57,15 @@
     "aboutUs": "About us",
     "terms": "Terms",
     "firstName": "First name",
-    "lastName": "Last name"
+    "lastName": "Last name",
+    "withdrawSuccessfully": "Your withdraw completed successfully.\nWait for the balance updates, usually it takes up to 15 minutes."
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",
     "transactionTimeoutExpired": "Transaction timeout expired",
     "fillAllRequiredFields": "Please, fill all required fields",
-    "incorrectLoginOrPassword": "Invalid account credentials"
+    "incorrectLoginOrPassword": "Invalid account credentials",
+    "amountLowerThanMin": "Min. amount is {{amount}}",
+    "amountMoreThanBalance": "Available balance is {{amount}}"
   }
 }
