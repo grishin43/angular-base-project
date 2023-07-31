@@ -2,18 +2,29 @@
   <div class="row">
     <div class="col-12">
       <div class="content-box mb-3">
-        <div class="row align-items-end gx-1 mb-2">
+        <div class="row align-items-end gx-2 mb-2">
           <div class="col-auto">
             <h5 class="m-0">{{'common.totalBalance' | translate}}:</h5>
           </div>
           <div class="col-auto">
             <button class="outline m-0 eye-button"
-             (click)="$event.preventDefault(); showBalance = !showBalance">
+                    (click)="$event.preventDefault(); showBalance = !showBalance">
               <ng-container *ngIf="!showBalance; else defaultEye">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="eye css-16vuvx8"><path d="M12 14.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M6.555 6.31L1 12l5.555 5.69a7.572 7.572 0 0010.89 0L23 12l-5.555-5.69a7.572 7.572 0 00-10.89 0zM17 12a5 5 0 11-10 0 5 5 0 0110 0z" fill="currentColor"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="eye css-16vuvx8">
+                  <path d="M12 14.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" fill="currentColor"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M6.555 6.31L1 12l5.555 5.69a7.572 7.572 0 0010.89 0L23 12l-5.555-5.69a7.572 7.572 0 00-10.89 0zM17 12a5 5 0 11-10 0 5 5 0 0110 0z"
+                        fill="currentColor"></path>
+                </svg>
               </ng-container>
               <ng-template #defaultEye>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="eye css-16vuvx8"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.94 5.06l16 16 2.12-2.12-2.446-2.447L23 12l-5.555-5.69a7.566 7.566 0 00-9.883-.87L5.06 2.94 2.939 5.06zm6.747 2.506a5 5 0 016.747 6.747L9.687 7.566z" fill="currentColor"></path><path d="M1 12l2.29-2.346 10.198 10.198a7.574 7.574 0 01-6.933-2.162L1 12z" fill="currentColor"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="eye css-16vuvx8">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M2.94 5.06l16 16 2.12-2.12-2.446-2.447L23 12l-5.555-5.69a7.566 7.566 0 00-9.883-.87L5.06 2.94 2.939 5.06zm6.747 2.506a5 5 0 016.747 6.747L9.687 7.566z"
+                        fill="currentColor"></path>
+                  <path d="M1 12l2.29-2.346 10.198 10.198a7.574 7.574 0 01-6.933-2.162L1 12z"
+                        fill="currentColor"></path>
+                </svg>
               </ng-template>
             </button>
           </div>
@@ -22,12 +33,12 @@
           <div class="row align-items-end gx-3">
             <div class="col-auto">
               <span class="btc-balance">
-                0.00006422 BTC
+                {{btcBalance}} BTC
               </span>
             </div>
             <div class="col-auto">
                <span class="usd-balance">
-                ≈ $1.87
+                ≈ ${{usdBalance}}
               </span>
             </div>
           </div>
@@ -35,7 +46,12 @@
         <ng-template #hiddenBalance>
           <span class="balance-hidden">***Balance hidden***</span>
           <span class="assets-hidden mt-3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="css-16vuvx8"><path transform="matrix(1 0 0 -1 4 9)" fill="url(#privacy-g_svg__paint0_linear)" d="M0 0h16v5H0z"></path><path d="M23 9H1v2h22V9zM13.03 17a4 4 0 007.94 0H23v-2h-2.29a4.001 4.001 0 00-7.42 0h-2.58a4.001 4.001 0 00-7.42 0H1v2h2.031a4 4 0 007.938 0h2.062z" fill="#76808F"></path><defs><linearGradient id="privacy-g_svg__paint0_linear" x1="8" y1="0" x2="8" y2="5" gradientUnits="userSpaceOnUse"><stop stop-color="#F0B90B"></stop><stop offset="1" stop-color="#F8D33A"></stop></linearGradient></defs></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="css-16vuvx8"><path
+              transform="matrix(1 0 0 -1 4 9)" fill="url(#privacy-g_svg__paint0_linear)" d="M0 0h16v5H0z"></path><path
+              d="M23 9H1v2h22V9zM13.03 17a4 4 0 007.94 0H23v-2h-2.29a4.001 4.001 0 00-7.42 0h-2.58a4.001 4.001 0 00-7.42 0H1v2h2.031a4 4 0 007.938 0h2.062z"
+              fill="#76808F"></path><defs><linearGradient id="privacy-g_svg__paint0_linear" x1="8" y1="0" x2="8" y2="5"
+                                                          gradientUnits="userSpaceOnUse"><stop
+              stop-color="#F0B90B"></stop><stop offset="1" stop-color="#F8D33A"></stop></linearGradient></defs></svg>
             <span>{{'common.hiddenBalance' | translate}}</span>
           </span>
         </ng-template>
@@ -51,6 +67,7 @@
             <thead>
             <tr>
               <th scope="col">Currency</th>
+              <th scope="col">Market price</th>
               <th scope="col">Quantity</th>
               <th scope="col">USD</th>
               <th scope="col" width="1px"></th>
@@ -64,9 +81,18 @@
             </tr>
             <ng-template #dataTemp>
               <tr *ngFor="let item of filteredItems">
-                <td>{{item.currency}}</td>
+                <td>
+                  <img
+                    style="margin-right: 6px"
+                    width="24"
+                    height="24px"
+                    [attr.src]="item.icon"
+                    [attr.alt]="item.currency">
+                  {{item.currency}}
+                </td>
+                <td>{{item.marketPrice}} $</td>
                 <td>{{item.quantity}}</td>
-                <td>{{item.usdPrice}}$</td>
+                <td>{{item.usdPrice}} $</td>
                 <td>
                   <div class="row align-items-end flex-nowrap gx-2">
                     <div class="col-auto">

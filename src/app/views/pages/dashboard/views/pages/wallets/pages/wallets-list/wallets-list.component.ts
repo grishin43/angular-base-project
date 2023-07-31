@@ -6,7 +6,20 @@ import {Router} from "@angular/router";
 import {WalletsRoute} from "../../common/enums/top-up-route.enum";
 import {FormControl} from "@angular/forms";
 import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-destroyer.directive";
-import {startWith} from "rxjs";
+import {forkJoin, map, startWith} from "rxjs";
+import {AuthService} from "../../../../../../../../services/auth/auth.service";
+import {IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
+import {mapExchangeBalance, mapExchangeBalanceRate} from "../../common/helpers/wallets-mapper";
+import {ApiService} from "../../../../../../../../services/api/api.service";
+import {CoinapiRateResponse} from "../../../../../../../../common/models/coinapi-response.model";
+
+export interface BalanceRow {
+  icon: string;
+  currency: string;
+  quantity: string;
+  usdPrice: string;
+  marketPrice?: string;
+}
 
 @Component({
   selector: 'app-wallets-list',
@@ -15,29 +28,17 @@ import {startWith} from "rxjs";
 })
 export class WalletsListComponent extends ADestroyerDirective implements OnInit {
   public isLoading!: boolean;
-  public tableData = [
-    {
-      currency: 'BTC',
-      quantity: '0.00000',
-      usdPrice: 32000
-    },
-    {
-      currency: 'ETH',
-      quantity: '0.00000',
-      usdPrice: 1800
-    },
-    {
-      currency: 'LTC',
-      quantity: '0.00000',
-      usdPrice: 142
-    }
-  ];
+  public rows!: BalanceRow[];
   public filteredItems: any[] = [];
   public showBalance!: boolean;
   public searchFormControl = new FormControl();
+  public usdBalance: string = '0.00';
+  public btcBalance: string = '0.00000000';
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private apiService: ApiService
   ) {
     super()
   }
@@ -55,10 +56,10 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
         )
         .subscribe({
           next: (str: string | null) => {
-            if(str){
+            if (str) {
               this.filteredItems = this.filterItems(str as string);
             } else {
-              this.filteredItems = this.tableData;
+              this.filteredItems = this.rows;
             }
           }
         })
@@ -66,16 +67,48 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
   }
 
   private filterItems(searchTerm: string): any[] {
-    return this.tableData.filter(item => {
+    return this.rows.filter(item => {
       return item.currency?.toLowerCase()?.indexOf(searchTerm.toLowerCase()) !== -1
     });
   }
 
   private getData(): void {
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    const exchangeBalance: IExchangeBalanceModel = this.authService.account.exchangeBalance;
+    if (exchangeBalance) {
+      this.rows = mapExchangeBalance(exchangeBalance);
+      this.subs.add(
+        forkJoin(
+          this.rows.map((row) => this.apiService.getExchangeRateToUsd(row.currency))
+        ).pipe(
+          map((res: CoinapiRateResponse[]) => mapExchangeBalanceRate(this.rows, res))
+        ).subscribe({
+          next: (rows: BalanceRow[]) => {
+            this.rows = rows;
+            this.calcTotalBalance(rows);
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+          }
+        })
+      )
+    } else {
+      this.rows = [];
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
+    }
+  }
+
+  private calcTotalBalance(balanceRows: BalanceRow[]): void {
+    this.usdBalance = balanceRows.reduce((accumulator, row: BalanceRow) => {
+      return accumulator + parseFloat(row.usdPrice);
+    }, 0).toFixed(2);
+    const matchBtcRow = balanceRows.find((row: BalanceRow) => row.currency === 'BTC');
+    if (matchBtcRow) {
+      this.btcBalance = (parseFloat(this.usdBalance) / parseFloat(matchBtcRow.marketPrice as string)).toFixed(8);
+    }
   }
 
   public withdraw(currency: string): void {

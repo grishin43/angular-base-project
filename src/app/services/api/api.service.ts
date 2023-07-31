@@ -1,14 +1,17 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {delay, Observable, of} from "rxjs";
 import {ISessionCreateDTO} from "../../common/models/domain/dto/session.dto";
 import {EBalanceTransactionStatus, IAccountModel} from "../../common/models/domain/models";
 import {environment} from "../../../environments/environment";
 import {IAccountCreate} from "../../common/models/account.model";
+import {CoinapiRateResponse} from "../../common/models/coinapi-response.model";
 
 @Injectable()
 export class ApiService {
   protected api: string = environment.apiDomain;
+  protected coinApiDomain: string = environment.coinApiDomain;
+  protected coinApiKey: string = environment.coinApiKey;
 
   constructor(
     private http: HttpClient
@@ -21,6 +24,13 @@ export class ApiService {
 
   public signUp(body: IAccountCreate): Observable<IAccountModel> {
     return this.http.post<IAccountModel>(`${this.api}/account/signUP`, body);
+  }
+
+  public getExchangeRateToUsd(token: string): Observable<CoinapiRateResponse> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'X-CoinAPI-Key': this.coinApiKey
+    });
+    return this.http.get<CoinapiRateResponse>(`${this.coinApiDomain}/exchangerate/${token}/USD`, {headers})
   }
 
   public getOrder(body: any): Observable<any> {
