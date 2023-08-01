@@ -35,7 +35,6 @@ export class IntroComponent extends ADestroyerDirective implements OnInit {
         )
         .subscribe({
           next: (res: TickerModel[]) => {
-            console.log(res);
             this.tickers = res || [];
           }
         })
