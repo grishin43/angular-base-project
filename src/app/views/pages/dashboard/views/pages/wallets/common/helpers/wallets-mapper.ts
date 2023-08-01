@@ -1,13 +1,13 @@
 import {IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
 import {BalanceRow} from "../../pages/wallets-list/wallets-list.component";
-import {CryptoPriceResponse} from "../../../../../../../../common/models/coinapi-response.model";
+import {TickerModel} from "../../../../../../../../common/models/ticker.model";
 
-export const mapExchangeBalanceRate = (rows: BalanceRow[], rates: CryptoPriceResponse[]): BalanceRow[] => {
-  rates.forEach((rate: CryptoPriceResponse) => {
-    const matchRow: BalanceRow | undefined = rows.find((row: BalanceRow) => row.currency.toLowerCase() == rate.symbol.toLowerCase());
+export const mapExchangeBalanceRate = (rows: BalanceRow[], rates: TickerModel[]): BalanceRow[] => {
+  rates.forEach((rate: TickerModel) => {
+    const matchRow: BalanceRow | undefined = rows.find((row: BalanceRow) => !rate.symbol.indexOf(row.currency));
     if (matchRow) {
-      matchRow.marketPrice = parseFloat(rate.price).toFixed(5);
-      matchRow.usdPrice = (parseFloat(rate.price) * parseFloat(matchRow.quantity)).toFixed(2);
+      matchRow.marketPrice = parseFloat(String(rate.customDirectPrice)).toFixed(5);
+      matchRow.usdPrice = (parseFloat(String(rate.customDirectPrice)) * parseFloat(matchRow.quantity)).toFixed(2);
     }
   })
   return rows;

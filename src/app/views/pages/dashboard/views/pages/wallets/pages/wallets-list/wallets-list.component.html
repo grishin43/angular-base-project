@@ -90,9 +90,9 @@
                     [attr.alt]="item.currency">
                   {{item.currency}}
                 </td>
-                <td>{{item.marketPrice}} $</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.usdPrice}} $</td>
+                <td>{{item.marketPrice || 0}} $</td>
+                <td>{{item.quantity || 0}}</td>
+                <td>{{item.usdPrice || 0}} $</td>
                 <td>
                   <div class="row align-items-end flex-nowrap gx-2">
                     <div class="col-auto">

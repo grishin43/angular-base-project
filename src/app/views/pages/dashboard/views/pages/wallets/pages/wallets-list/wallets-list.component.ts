@@ -12,6 +12,7 @@ import {IExchangeBalanceModel} from "../../../../../../../../common/models/domai
 import {mapExchangeBalance, mapExchangeBalanceRate} from "../../common/helpers/wallets-mapper";
 import {ApiService} from "../../../../../../../../services/api/api.service";
 import {CryptoPriceResponse} from "../../../../../../../../common/models/coinapi-response.model";
+import {TickerModel} from "../../../../../../../../common/models/ticker.model";
 
 export interface BalanceRow {
   icon: string;
@@ -78,21 +79,10 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
     if (exchangeBalance) {
       this.rows = mapExchangeBalance(exchangeBalance);
       this.subs.add(
-        forkJoin(
-          this.rows.map((row) => {
-            return this.apiService.getExchangeRate('USDT', row.currency)
-              .pipe(
-                map((res: CryptoPriceResponse) => {
-                  return {
-                    symbol: res.symbol.replace('USDT', ''),
-                    price: res.price
-                  }
-                })
-              )
-          })
-        ).pipe(
-          map((res: CryptoPriceResponse[]) => mapExchangeBalanceRate(this.rows, res))
-        ).subscribe({
+        this.apiService.searchTickers()
+          .pipe(
+            map((res: TickerModel[]) => mapExchangeBalanceRate(this.rows, res))
+          ).subscribe({
           next: (rows: BalanceRow[]) => {
             this.rows = rows;
             this.calcTotalBalance(rows);

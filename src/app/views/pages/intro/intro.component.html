@@ -93,158 +93,36 @@
               </tr>
               </thead>
               <tbody>
-              <tr
+              <tr *ngFor="let item of tickers; let i = index"
                 class="crumina-module crumina-pricing-table pricing-table--style-table-blurring c-brown BTC-ticker-main">
-                <td>1</td>
+                <td>{{i + 1}}</td>
                 <td>
                   <div class="pricing-thumb">
-                    <img src="assets/images/btc.png" class="woox-icon" alt="bitcoin">
+                    <img class="woox-icon" alt="bitcoin" [attr.src]="'assets/images/' + (item.symbol | lowercase) + '.png'">
                     <h6 class="pricing-title">
-                      Bitcoin
-                      <span>BTC</span>
+                      {{item.symbol}}
                     </h6>
                   </div>
                 </td>
                 <td>
                   <div class="currency-details-item">
                     <div class="value c-primary">
-                      29836.34$
+                      {{item.customDirectPrice.toFixed(5)}}
                     </div>
                   </div>
                 </td>
                 <td>
                   <div class="currency-details-item">
                     <div class="value font-weight-normalc-red-light">
-                      -0.625%
-                    </div>
-                  </div>
-                </td>
-                <td>1058237648.96$</td>
-                <td>
-                  <a href="#" class="buy-btn">Buy</a>
-                </td>
-              </tr>
-              <tr class="crumina-module crumina-pricing-table pricing-table--style-table-blurring c-blue ETH-ticker-main">
-                <td>2</td>
-                <td>
-                  <div class="pricing-thumb">
-                    <img src="assets/images/eth.png" class="woox-icon" alt="bitcoin">
-                    <h6 class="pricing-title">
-                      Ethereum
-                      <span>ETH</span>
-                    </h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value c-primary">
-                      2118.58$
+                      {{item.priceChangePercent}}
                     </div>
                   </div>
                 </td>
                 <td>
-                  <div class="currency-details-item">
-                    <div class="value font-weight-normalc-red-light">
-                      -0.217%
-                    </div>
-                  </div>
-                </td>
-                <td>499502397.57$</td>
-                <td>
-                  <a href="#" class="buy-btn">Buy</a>
-                </td>
-              </tr>
-              <tr
-                class="crumina-module crumina-pricing-table pricing-table--style-table-blurring c-blue-light BNB-ticker-main">
-                <td>3</td>
-                <td>
-                  <div class="pricing-thumb">
-                    <img src="assets/images/bnb.png" class="woox-icon" alt="bitcoin">
-                    <h6 class="pricing-title">
-                      Binance Coin
-                      <span>BNB</span>
-                    </h6>
-                  </div>
+                  {{item.quoteVolume}}
                 </td>
                 <td>
-                  <div class="currency-details-item">
-                    <div class="value c-primary">
-                      239.20$
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value font-weight-normalc-red-light">
-                      -1.238%
-                    </div>
-                  </div>
-                </td>
-                <td>225407989.06$</td>
-                <td>
-                  <a href="#" class="buy-btn">Buy</a>
-                </td>
-              </tr>
-              <tr
-                class="crumina-module crumina-pricing-table pricing-table--style-table-blurring c-border-color LTC-ticker-main">
-                <td>4</td>
-                <td>
-                  <div class="pricing-thumb">
-                    <img src="assets/images/ltc.png" class="woox-icon" alt="bitcoin">
-                    <h6 class="pricing-title">
-                      Litecoin
-                      <span>LTC</span>
-                    </h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value c-primary">
-                      90.45$
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value font-weight-normalc-red-light">
-                      -0.385%
-                    </div>
-                  </div>
-                </td>
-                <td>57380997.56$</td>
-                <td>
-                  <a href="#" class="buy-btn">Buy</a>
-                </td>
-              </tr>
-              <tr
-                class="crumina-module crumina-pricing-table pricing-table--style-table-blurring c-blue-lighter BCH-ticker-main">
-                <td>5</td>
-                <td>
-                  <div class="pricing-thumb">
-                    <img src="assets/images/bch.png" class="woox-icon" alt="bitcoincash">
-                    <h6 class="pricing-title">
-                      BitcoinCash
-                      <span>BCH</span>
-                    </h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value c-primary">
-                      240.80$
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="currency-details-item">
-                    <div class="value font-weight-normalc-green-succes">
-                      1.732%
-                    </div>
-                  </div>
-                </td>
-                <td>62639896.62$</td>
-                <td>
-                  <a href="#" class="buy-btn">Buy</a>
+                  <a [routerLink]="'/dashboard'" class="buy-btn">Buy</a>
                 </td>
               </tr>
               </tbody>
