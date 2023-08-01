@@ -54,7 +54,8 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
         .subscribe({
           next: (token: string | null) => {
             if (token) {
-              this.tokenAvailableBalance = this.authService.account.exchangeBalance[token] || 0;
+              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
+              this.tokenAvailableBalance = matchToken?.balance || 0;
               const matchNetwork = this.paymentMethods.find((pm: BalanceCurrency) => pm.type === token)?.network;
               if (matchNetwork) {
                 this.availableNetworks = [matchNetwork];
@@ -95,7 +96,6 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
           .subscribe({
             next: () => {
               this.isSuccessfull = true;
-              this.isLoading = false;
             },
             error: () => {
               this.toastService.show({

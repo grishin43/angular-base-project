@@ -83,6 +83,7 @@
     "fillAllRequiredFields": "Please, fill all required fields",
     "incorrectLoginOrPassword": "Invalid account credentials",
     "amountLowerThanMin": "Min. amount is {{amount}}",
-    "amountMoreThanBalance": "Available balance is {{amount}}"
+    "amountMoreThanBalance": "Available balance is {{amount}}",
+    "notEnoughBalance": "Not enough balance. Please top up first."
   }
 }

@@ -61,23 +61,20 @@ export class ApiService {
     return this.http.get<IBalanceTransaction>(`${this.api}/balance-transaction/${id}`, {headers});
   }
 
-  public getExchangeRate(fromCurrency: string, toCurrency = 'USDT'): Observable<CryptoPriceResponse> {
-    if (fromCurrency === toCurrency) {
-      return of({
-        symbol: toCurrency,
-        price: '1.00000000'
-      })
-    } else {
-      return this.http.get<CryptoPriceResponse>(`${this.cryptoApiDomain}/ticker/price?symbol=${toCurrency}${fromCurrency}`)
-    }
-  }
-
   public searchTransactions(accountId: string): Observable<ISearchResponseDTO<IBalanceTransactionModel>> {
     const headers: HttpHeaders = new HttpHeaders({
       'x-account-id': accountId
     });
     return this.http.get<ISearchResponseDTO<IBalanceTransactionModel>>(`${this.api}/balance-transaction?filter[accountId]=${accountId}&sort[createdAt]=desc`, {headers});
   }
+
+  public balanceTransactionTransfer(accountId: string, body: any): Observable<void> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.post<void>(`${this.api}/balance-transaction/transfer/${accountId}`, body, {headers});
+  }
+
 
   public searchTickers(): Observable<TickerModel[]> {
     return this.http.get<TickerModel[]>(`${this.api}/ticker`);

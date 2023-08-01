@@ -8,9 +8,9 @@ import {Router} from "@angular/router";
 import {environment} from "../../../../../../../../../environments/environment";
 import {AuthService} from "../../../../../../../../services/auth/auth.service";
 import {BalanceCurrency} from "../../../../../../../../common/models/domain/models";
-import {combineLatest} from "rxjs";
+import {startWith} from "rxjs";
 import {ApiService} from "../../../../../../../../services/api/api.service";
-import {CryptoPriceResponse} from "../../../../../../../../common/models/coinapi-response.model";
+import {TickerModel} from "../../../../../../../../common/models/ticker.model";
 
 export interface ExchangeForm {
   fromCurrency: FormControl<string | null>;
@@ -33,12 +33,10 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
   public formGroup!: FormGroup<ExchangeForm>;
   public isLoading!: boolean;
   public isSuccessfull!: boolean;
-
-  public readonly exchangeFee: number = environment.exchangeFee;
-
   public paymentMethods!: BalanceCurrency[];
   public availableBalanceFrom = 0;
   public availableBalanceTo = 0;
+  public tickers: TickerModel[];
 
   constructor(
     private toastService: ToastService,
@@ -52,10 +50,10 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
 
   ngOnInit() {
     this.initForm();
-    this.subCurrencyValuesChanges();
     this.subCurrencyFromValueChanges();
     this.subCurrencyToValueChanges();
     this.patchInitialPaymentMethods();
+    this.searchTickers();
   }
 
   public get toExchangeRate(): number | null | undefined {
@@ -75,31 +73,18 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
     this.formGroup.get('toCurrency')?.patchValue(this.paymentMethods[1].type);
   }
 
-  private subCurrencyValuesChanges(): void {
-    this.subs.add(
-      combineLatest([
-        this.formGroup.get('fromCurrency')?.valueChanges,
-        this.formGroup.get('toCurrency')?.valueChanges
-      ]).subscribe({
-        next: (res: any) => {
-          const [fromCurrency, toCurrency] = res;
-          this.patchCurrenciesPairs(fromCurrency, toCurrency);
-        }
-      })
-    )
-  }
-
-  private patchCurrenciesPairs(fromCurrency: string, toCurrency: string): void {
+  private searchTickers(): void {
     this.isLoading = true;
     this.subs.add(
-      this.apiService.getExchangeRate(fromCurrency, toCurrency)
+      this.apiService.searchTickers()
         .subscribe({
-          next: (res: CryptoPriceResponse) => {
-            this.formGroup.get('toExchangeRate')?.patchValue(parseFloat(res.price));
+          next: (res: TickerModel[]) => {
+            this.tickers = res;
             this.isLoading = false;
+            this.subFromAmountChanges();
           },
           error: () => {
-            this.patchCurrenciesPairs(toCurrency, fromCurrency);
+            this.isLoading = false;
           }
         })
     )
@@ -111,12 +96,14 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
         .subscribe({
           next: (token: string | null) => {
             if (token) {
-              this.availableBalanceFrom = this.authService.account.exchangeBalance[token] || 0;
-              this.formGroup.get('fromAmount')?.patchValue(this.availableBalanceFrom);
+              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
+              this.availableBalanceFrom = matchToken?.balance || 0;
+              this.formGroup.get('fromNetwork')?.patchValue(matchToken?.network as string);
             } else {
               this.availableBalanceFrom = 0;
-              this.formGroup.get('fromAmount')?.patchValue(0);
+              this.formGroup.get('fromNetwork')?.patchValue(null);
             }
+            this.calcPrice();
           }
         })
     )
@@ -128,25 +115,51 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
         .subscribe({
           next: (token: string | null) => {
             if (token) {
-              this.availableBalanceTo = this.authService.account.exchangeBalance[token] || 0;
-              this.formGroup.get('toAmount')?.patchValue(this.availableBalanceTo);
+              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
+              this.availableBalanceTo = matchToken?.balance || 0;
+              this.formGroup.get('toNetwork')?.patchValue(matchToken?.network as string);
             } else {
               this.availableBalanceTo = 0;
-              this.formGroup.get('toAmount')?.patchValue(0);
+              this.formGroup.get('toNetwork')?.patchValue(null);
             }
+            this.calcPrice();
           }
         })
     )
+  }
+
+  private subFromAmountChanges(): void {
+    this.subs.add(
+      this.formGroup.get('fromAmount')?.valueChanges
+        .pipe(
+          startWith(null)
+        )
+        .subscribe({
+          next: (fromAmount: number | null) => {
+            this.calcPrice();
+          }
+        })
+    )
+  }
+
+  private calcPrice(): void {
+    const fromTicker = this.tickers?.find((t) => t.symbol.startsWith(this.fromCurrency as string));
+    const toTicker = this.tickers?.find((t) => t.symbol.startsWith(this.toCurrency as string));
+    const x = this.formGroup.get('fromAmount')?.value as number * (fromTicker?.customDirectPrice || 0);
+    const y = x / (toTicker?.customDirectPrice || 1);
+    this.formGroup.get('toAmount')?.patchValue(y);
+    this.formGroup.get('fromExchangeRate')?.patchValue(fromTicker?.customDirectPrice || 0);
+    this.formGroup.get('toExchangeRate')?.patchValue(toTicker?.customDirectPrice || 0);
   }
 
   private initForm(): void {
     this.formGroup = new FormGroup<ExchangeForm>({
       fromCurrency: new FormControl(null, [Validators.required]),
       fromNetwork: new FormControl(null, [Validators.required]),
-      fromAmount: new FormControl(null, [Validators.required]),
+      fromAmount: new FormControl(0, [Validators.required]),
       toCurrency: new FormControl(null, [Validators.required]),
       toNetwork: new FormControl(null, [Validators.required]),
-      toAmount: new FormControl(null, [Validators.required]),
+      toAmount: new FormControl(0, [Validators.required]),
       fromExchangeRate: new FormControl(null, [Validators.required]),
       toExchangeRate: new FormControl(null, [Validators.required])
     })
@@ -155,9 +168,23 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
   public onSubmit(): void {
     if (this.formGroup.valid) {
       this.isLoading = true;
-      setTimeout(() => {
-        this.isSuccessfull = true;
-      }, 750);
+      const {toAmount, ...body} = this.formGroup.value;
+      this.subs.add(
+        this.apiService.balanceTransactionTransfer(this.authService.account.id, body)
+          .subscribe({
+            next: () => {
+              this.isSuccessfull = true;
+            },
+            error: (err) => {
+              this.toastService.show({
+                i18nKey: err?.error?.message || 'errors.errorOccurred',
+                type: "error",
+                duration: 5000
+              });
+              this.isLoading = false;
+            }
+          })
+      )
     } else {
       this.toastService.show({
         i18nKey: 'errors.fillAllRequiredFields',
