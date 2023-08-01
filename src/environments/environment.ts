@@ -1,5 +1,5 @@
 export const environment = {
-  apiDomain: 'http://655c673f-9ea7.hypernet.pro/api',
+  apiDomain: 'https://fincoinz.com/api',
   cryptoApiDomain: 'https://api.binance.com/api/v3',
   minUsdDeposit: 100,
   supportLink: 'mailto:support@fincoinz.com',
