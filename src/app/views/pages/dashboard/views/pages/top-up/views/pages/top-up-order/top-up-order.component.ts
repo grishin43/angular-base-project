@@ -11,6 +11,8 @@ import {environment} from "../../../../../../../../../../environments/environmen
 import {AuthService} from "../../../../../../../../../services/auth/auth.service";
 import {BalanceCurrency, IBalanceTransaction, IWallet} from "../../../../../../../../../common/models/domain/models";
 import {catchError, switchMap, throwError} from "rxjs";
+import {TickerModel} from "../../../../../../../../../common/models/ticker.model";
+import {AnimationsHelper} from "../../../../../../../../../common/helpers/animations.helper";
 
 export interface TopUpForm {
   currency: FormControl<string | null>;
@@ -21,7 +23,8 @@ export interface TopUpForm {
 @Component({
   selector: 'app-top-up-order',
   templateUrl: './top-up-order.component.html',
-  styleUrls: ['./top-up-order.component.scss']
+  styleUrls: ['./top-up-order.component.scss'],
+  animations: [AnimationsHelper.fadeInOut]
 })
 export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
   public formGroup!: FormGroup<TopUpForm>;
@@ -30,6 +33,8 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
   public readonly topUpFee: number = environment.topUpFee;
   public paymentMethods!: BalanceCurrency[];
   public availableNetworks: string[];
+  public tickers!: TickerModel[];
+  public usdtUsdPrice: number = 1;
 
   constructor(
     private apiService: ApiService,
@@ -44,21 +49,63 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.subTickers();
     this.subCurrencyValueChanges();
     this.subscribeRoute();
+  }
 
+  public get currency(): string {
+    return this.formGroup.get('currency')?.value || '';
+  }
+
+  public get minCurrencyDeposit(): string {
+    if (this.tickers && this.usdtUsdPrice) {
+      const token = this.formGroup.get('currency')?.value;
+      if (token) {
+        const matchTick = this.tickers.find((t) => t.symbol.startsWith(token));
+        if (matchTick) {
+          const matchUsdPrice = (matchTick.customDirectPrice * this.usdtUsdPrice) || 1;
+          return (this.minUsdDeposit / matchUsdPrice).toFixed(5);
+        }
+      }
+    }
+    return '0';
+  }
+
+  private subTickers(): void {
+    this.isLoading = true;
+    this.subs.add(
+      this.apiService.searchTickers()
+        .subscribe({
+          next: (tickers: TickerModel[]) => {
+            this.tickers = tickers;
+            this.usdtUsdPrice = tickers.find((t) => t.symbol === 'USDTUSD')?.customDirectPrice || 1;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.toastService.show({
+              i18nKey: 'errors.errorOccurred',
+              type: "error",
+              duration: 5000
+            });
+            this.isLoading = false;
+          }
+        })
+    )
   }
 
   public onSubmit(): void {
-    if (this.formGroup.valid) {
+    const isWrongAmount: boolean = (parseFloat(String(this.formGroup.get('amount')?.value as number)) < parseFloat(this.minCurrencyDeposit))
+    if (this.formGroup.valid && !isWrongAmount) {
       this.getOrder();
     } else {
       this.toastService.show({
-        i18nKey: (parseFloat(String(this.formGroup.get('amount')?.value as number)) < this.minUsdDeposit)
+        i18nKey: isWrongAmount
           ? 'errors.amountLowerThanMin'
           : 'errors.fillAllRequiredFields',
         i18nInterpolateParams: {
-          amount: this.minUsdDeposit.toString()
+          amount: this.minCurrencyDeposit,
+          currency: this.currency
         },
         type: "error",
         duration: 5000
@@ -97,7 +144,7 @@ export class TopUpOrderComponent extends ADestroyerDirective implements OnInit {
     this.formGroup = new FormGroup<TopUpForm>({
       currency: new FormControl(null, [Validators.required]),
       network: new FormControl(null, [Validators.required]),
-      amount: new FormControl(this.minUsdDeposit, [Validators.required, Validators.min(this.minUsdDeposit)]),
+      amount: new FormControl(null, [Validators.required, Validators.min(parseFloat(this.minCurrencyDeposit))]),
     })
   }
 

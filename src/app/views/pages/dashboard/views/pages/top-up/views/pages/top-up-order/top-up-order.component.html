@@ -3,11 +3,17 @@
     class="content-box-sm"
     [formGroup]="formGroup"
     (submit)="$event.preventDefault(); onSubmit()">
+    <div
+      @fadeInOut
+      *ngIf="isLoading"
+      class="content-overlay">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
     <h3 class="text-center mb-2">
       {{'common.makeOrder' | translate}}
     </h3>
     <p class="text-center">
-      {{'common.minUsdDeposit' | translate : {amount: minUsdDeposit} }}
+      {{'common.minUsdDeposit' | translate : {currency: currency, amount: minCurrencyDeposit} }}
     </p>
     <div class="form-group">
       <label for="paymentMethod">
@@ -45,7 +51,7 @@
         type="text"
         id="amount"
         name="amount"
-        placeholder="100"
+        placeholder="0"
         required
         digitsOnly
         [formControlName]="'amount'">

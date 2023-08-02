@@ -2,7 +2,7 @@
   "LANG": "en",
   "common": {
     "makeOrder": "Make order",
-    "minUsdDeposit": "Minimum deposit amount - ${{amount}}",
+    "minUsdDeposit": "Minimum deposit amount - {{amount}} {{currency}}",
     "generateOrder": "Generate order",
     "paymentMethod": "Payment method",
     "amount": "Amount",
@@ -83,7 +83,7 @@
     "transactionTimeoutExpired": "Transaction timeout expired",
     "fillAllRequiredFields": "Please, fill all required fields",
     "incorrectLoginOrPassword": "Invalid account credentials",
-    "amountLowerThanMin": "Min. amount is {{amount}}",
+    "amountLowerThanMin": "Min. amount is {{amount}} {{currency}}",
     "amountMoreThanBalance": "Available balance is {{amount}}",
     "notEnoughBalance": "Not enough balance. Please top up first."
   }

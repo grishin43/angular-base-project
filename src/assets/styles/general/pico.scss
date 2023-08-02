@@ -38,7 +38,7 @@ $grey-900: #24252f;
 }
 
 button, input[type=submit], input[type=button], input[type=reset], [role=button] {
-  &:not(.contrast):not(.outline) {
+  &:not(.contrast):not(.outline):not([class*="icon-button"]) {
     color: #000000;
   }
 }
