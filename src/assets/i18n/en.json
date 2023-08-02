@@ -75,7 +75,8 @@
     "update": "Update",
     "passwordUpdated": "Password successfully updated",
     "changePassword": "Change password",
-    "oldPassword": "Old password"
+    "oldPassword": "Old password",
+    "emailSubSuccess": "Successful! Check your email!"
   },
   "errors": {
     "errorOccurred": "Unexpected error occurred, please contact our support",

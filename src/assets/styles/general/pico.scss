@@ -36,3 +36,9 @@ $grey-900: #24252f;
 
   --form-element-disabled-background-color: #141417;
 }
+
+button, input[type=submit], input[type=button], input[type=reset], [role=button] {
+  &:not(.contrast):not(.outline) {
+    color: #000000;
+  }
+}

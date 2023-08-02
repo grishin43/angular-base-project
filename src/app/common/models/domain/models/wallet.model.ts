@@ -10,9 +10,9 @@ export enum EWalletCurrency {
 export enum EWalletNetwork {
   TRC20 = 'TRC20',
   Bitcoin = 'Bitcoin',
-  Etherum = 'Etherum',
+  Ethereum = 'Ethereum',
   Solana = 'Solana',
-  StartChain = 'StartChain',
+  SmartChain = 'SmartChain',
   Litecoin = 'Litecoin',
 }
 

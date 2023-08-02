@@ -7,7 +7,7 @@ import {AppRoute} from "../../../../../../../../common/enums/app-route.enum";
 import {Router} from "@angular/router";
 import {environment} from "../../../../../../../../../environments/environment";
 import {AuthService} from "../../../../../../../../services/auth/auth.service";
-import {BalanceCurrency} from "../../../../../../../../common/models/domain/models";
+import {BalanceCurrency, IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
 import {startWith} from "rxjs";
 import {ApiService} from "../../../../../../../../services/api/api.service";
 import {TickerModel} from "../../../../../../../../common/models/ticker.model";
@@ -90,20 +90,45 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
     )
   }
 
+  private subExchangeBalance(cb: (exchangeBalance: IExchangeBalanceModel) => void): void {
+    this.isLoading = true;
+    this.subs.add(
+      this.apiService.getExchangeBalance(this.authService.account.id)
+        .subscribe({
+          next: (exchangeBalance: IExchangeBalanceModel) => {
+            cb(exchangeBalance);
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.toastService.show({
+              i18nKey: 'errors.errorOccurred',
+              type: "error",
+              duration: 5000
+            });
+          }
+        })
+    )
+  }
+
   private subCurrencyFromValueChanges(): void {
     this.subs.add(
       this.formGroup.get('fromCurrency')?.valueChanges
         .subscribe({
           next: (token: string | null) => {
-            if (token) {
-              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
-              this.availableBalanceFrom = matchToken?.balance || 0;
-              this.formGroup.get('fromNetwork')?.patchValue(matchToken?.network as string);
-            } else {
-              this.availableBalanceFrom = 0;
-              this.formGroup.get('fromNetwork')?.patchValue(null);
-            }
-            this.calcPrice();
+            this.subExchangeBalance(
+              (exchangeBalance: IExchangeBalanceModel) => {
+                if (token) {
+                  const matchToken: BalanceCurrency | undefined = exchangeBalance.currencies.find((c) => c.type === token);
+                  this.availableBalanceFrom = matchToken?.balance || 0;
+                  this.formGroup.get('fromNetwork')?.patchValue(matchToken?.network as string);
+                } else {
+                  this.availableBalanceFrom = 0;
+                  this.formGroup.get('fromNetwork')?.patchValue(null);
+                }
+                this.calcPrice();
+              }
+            )
           }
         })
     )
@@ -114,15 +139,19 @@ export class WalletsExchangeComponent extends ADestroyerDirective implements OnI
       this.formGroup.get('toCurrency')?.valueChanges
         .subscribe({
           next: (token: string | null) => {
-            if (token) {
-              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
-              this.availableBalanceTo = matchToken?.balance || 0;
-              this.formGroup.get('toNetwork')?.patchValue(matchToken?.network as string);
-            } else {
-              this.availableBalanceTo = 0;
-              this.formGroup.get('toNetwork')?.patchValue(null);
-            }
-            this.calcPrice();
+            this.subExchangeBalance(
+              (exchangeBalance: IExchangeBalanceModel) => {
+                if (token) {
+                  const matchToken: BalanceCurrency | undefined = exchangeBalance.currencies.find((c) => c.type === token);
+                  this.availableBalanceTo = matchToken?.balance || 0;
+                  this.formGroup.get('toNetwork')?.patchValue(matchToken?.network as string);
+                } else {
+                  this.availableBalanceTo = 0;
+                  this.formGroup.get('toNetwork')?.patchValue(null);
+                }
+                this.calcPrice();
+              }
+            );
           }
         })
     )

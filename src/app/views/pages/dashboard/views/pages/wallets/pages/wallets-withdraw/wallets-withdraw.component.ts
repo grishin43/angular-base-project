@@ -8,7 +8,7 @@ import {ApiService} from "../../../../../../../../services/api/api.service";
 import {BalanceWithdraw} from "../../../../../../../../common/models/balance.model";
 import {AnimationsHelper} from "../../../../../../../../common/helpers/animations.helper";
 import {AppRoute} from "../../../../../../../../common/enums/app-route.enum";
-import {BalanceCurrency} from "../../../../../../../../common/models/domain/models";
+import {BalanceCurrency, IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
 
 export interface WithdrawForm {
   currency: FormControl<string | null>;
@@ -48,24 +48,49 @@ export class WalletsWithdrawComponent extends ADestroyerDirective implements OnI
     this.subscribeRoute();
   }
 
+  private subExchangeBalance(cb: (exchangeBalance: IExchangeBalanceModel) => void): void {
+    this.isLoading = true;
+    this.subs.add(
+      this.apiService.getExchangeBalance(this.authService.account.id)
+        .subscribe({
+          next: (exchangeBalance: IExchangeBalanceModel) => {
+            cb(exchangeBalance);
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.toastService.show({
+              i18nKey: 'errors.errorOccurred',
+              type: "error",
+              duration: 5000
+            });
+          }
+        })
+    )
+  }
+
   private subCurrencyValueChanges(): void {
     this.subs.add(
       this.formGroup.get('currency')?.valueChanges
         .subscribe({
           next: (token: string | null) => {
-            if (token) {
-              const matchToken: BalanceCurrency | undefined = this.authService.account.exchangeBalance.currencies.find((c) => c.type === token);
-              this.tokenAvailableBalance = matchToken?.balance || 0;
-              const matchNetwork = this.paymentMethods.find((pm: BalanceCurrency) => pm.type === token)?.network;
-              if (matchNetwork) {
-                this.availableNetworks = [matchNetwork];
-                this.formGroup.get('network')?.patchValue(matchNetwork);
+            this.subExchangeBalance(
+              (exchangeBalance: IExchangeBalanceModel) => {
+                if (token) {
+                  const matchToken: BalanceCurrency | undefined = exchangeBalance.currencies.find((c) => c.type === token);
+                  this.tokenAvailableBalance = matchToken?.balance || 0;
+                  const matchNetwork = this.paymentMethods.find((pm: BalanceCurrency) => pm.type === token)?.network;
+                  if (matchNetwork) {
+                    this.availableNetworks = [matchNetwork];
+                    this.formGroup.get('network')?.patchValue(matchNetwork);
+                  }
+                } else {
+                  this.tokenAvailableBalance = 0;
+                  this.availableNetworks = [];
+                }
+                this.formGroup.get('amount')?.patchValue(this.tokenAvailableBalance);
               }
-            } else {
-              this.tokenAvailableBalance = 0;
-              this.availableNetworks = [];
-            }
-            this.formGroup.get('amount')?.patchValue(this.tokenAvailableBalance);
+            )
           }
         })
     )

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError, delay, map, Observable, of} from "rxjs";
+import {catchError, delay, map, Observable, of, tap} from "rxjs";
 import {ISessionCreateDTO} from "../../common/models/domain/dto/session.dto";
 import {
   EBalanceTransactionStatus,
   IAccountModel,
-  IBalanceTransaction, IBalanceTransactionModel,
+  IBalanceTransaction, IBalanceTransactionModel, IExchangeBalanceModel,
   IWallet
 } from "../../common/models/domain/models";
 import {environment} from "../../../environments/environment";
@@ -14,14 +14,15 @@ import {CryptoPriceResponse} from "../../common/models/coinapi-response.model";
 import {BalanceWithdraw} from "../../common/models/balance.model";
 import {ISearchResponseDTO} from "../../common/models/domain/dto/search.dto";
 import {TickerModel} from "../../common/models/ticker.model";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class ApiService {
   protected api: string = environment.apiDomain;
-  protected cryptoApiDomain: string = environment.cryptoApiDomain;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
   }
 
@@ -75,6 +76,15 @@ export class ApiService {
     return this.http.post<void>(`${this.api}/balance-transaction/transfer/${accountId}`, body, {headers});
   }
 
+  public getExchangeBalance(accountId: string): Observable<IExchangeBalanceModel> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'x-account-id': accountId
+    });
+    return this.http.get<IExchangeBalanceModel>(`${this.api}/account/exchange-balance/${accountId}`, {headers})
+      .pipe(
+        tap((exchangeBalance: IExchangeBalanceModel) => this.authService.patchExchangeBalance(exchangeBalance))
+      )
+  }
 
   public searchTickers(): Observable<TickerModel[]> {
     return this.http.get<TickerModel[]>(`${this.api}/ticker`);

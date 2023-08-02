@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BalanceCurrency, IAccountModel} from "../../common/models/domain/models";
+import {BalanceCurrency, IAccountModel, IExchangeBalanceModel} from "../../common/models/domain/models";
 import {Router} from "@angular/router";
 import {AppRoute} from "../../common/enums/app-route.enum";
 import {LocalStorageService} from "../local-storage/local-storage.service";
@@ -34,6 +34,11 @@ export class AuthService {
     this.localstorageService.clear();
     this.account = undefined as unknown as IAccountModel;
     this.router.navigate([`/${AppRoute.INTRO}`]);
+  }
+
+  public patchExchangeBalance(exchangeBalance: IExchangeBalanceModel): void {
+    this.account.exchangeBalance = exchangeBalance;
+    this.localstorageService.setItem(LocalStorageKey.ACCOUNT, this.account);
   }
 
 }

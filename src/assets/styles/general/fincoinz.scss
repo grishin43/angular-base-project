@@ -25,6 +25,11 @@ body {
 }
 
 .fincoinz {
+
+  section {
+    margin: 0 auto !important;
+  }
+
   p, li {
     font-size: 16px;
     font-weight: 400;
@@ -3420,8 +3425,26 @@ body {
     justify-content: center;
   }
 
+  footer .footer__content-top__middle nav ul {
+    flex: 0 0 50%;
+    max-width: 50%;
+    display: block;
+    padding-left: 90px;
+    margin: 14px 0;
+
+    @media screen and (max-width: 991px) {
+      flex: 0 0 auto;
+    }
+
+    @media screen and (max-width: 1199px) {
+      padding-left: 60px;
+    }
+  }
+
   footer .footer__content-top__middle nav ul li {
     list-style: none;
+    display: block;
+    padding: 0;
   }
 
   footer .footer__content-top__right {

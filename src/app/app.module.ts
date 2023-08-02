@@ -18,6 +18,7 @@ import {ToastModule} from "./services/toast/toast.module";
 import { IntroComponent } from './views/pages/intro/intro.component';
 import { AboutComponent } from './views/pages/about/about.component';
 import { TermsComponent } from './views/pages/terms/terms.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -28,17 +29,18 @@ import { TermsComponent } from './views/pages/terms/terms.component';
     AboutComponent,
     TermsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]},
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingTranslationService},
-    }),
-    ToastModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]},
+            missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingTranslationService},
+        }),
+        ToastModule,
+        ReactiveFormsModule
+    ],
   providers: [
     ApiService,
     AuthService,

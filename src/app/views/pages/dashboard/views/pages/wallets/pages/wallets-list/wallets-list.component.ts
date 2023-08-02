@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 import {WalletsRoute} from "../../common/enums/top-up-route.enum";
 import {FormControl} from "@angular/forms";
 import {ADestroyerDirective} from "../../../../../../../../common/abstracts/a-destroyer.directive";
-import {forkJoin, map, startWith} from "rxjs";
+import {forkJoin, map, startWith, switchMap, tap} from "rxjs";
 import {AuthService} from "../../../../../../../../services/auth/auth.service";
 import {IExchangeBalanceModel} from "../../../../../../../../common/models/domain/models";
 import {mapExchangeBalance, mapExchangeBalanceRate} from "../../common/helpers/wallets-mapper";
@@ -75,16 +75,19 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
 
   private getData(): void {
     this.isLoading = true;
-    const exchangeBalance: IExchangeBalanceModel = this.authService.account.exchangeBalance;
-    if (exchangeBalance) {
-      this.rows = mapExchangeBalance(exchangeBalance);
-      this.subs.add(
-        this.apiService.searchTickers()
-          .pipe(
-            map((res: TickerModel[]) => mapExchangeBalanceRate(this.rows, res))
-          ).subscribe({
+    this.subs.add(
+      this.apiService.getExchangeBalance(this.authService.account.id)
+        .pipe(
+          switchMap((exchangeBalance: IExchangeBalanceModel) =>
+            this.apiService.searchTickers()
+              .pipe(
+                map((res: TickerModel[]) => mapExchangeBalanceRate(mapExchangeBalance(exchangeBalance), res))
+              ))
+        )
+        .subscribe({
           next: (rows: BalanceRow[]) => {
             this.rows = rows;
+            this.filteredItems = rows;
             this.calcTotalBalance(rows);
             this.isLoading = false;
           },
@@ -92,13 +95,7 @@ export class WalletsListComponent extends ADestroyerDirective implements OnInit 
             this.isLoading = false;
           }
         })
-      )
-    } else {
-      this.rows = [];
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 500);
-    }
+    )
   }
 
   private calcTotalBalance(balanceRows: BalanceRow[]): void {

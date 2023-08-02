@@ -55,8 +55,9 @@
                 type="email"
                 placeholder="Enter your email"
                 required=""
+                [formControl]="formControl"
               />
-              <button type="submit" class="btn-action">
+              <button type="submit" class="btn-action" (click)="$event.preventDefault(); submit()">
                 Submit
               </button>
             </form>
